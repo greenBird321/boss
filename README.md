@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 ## 说明
 [Phalcon相关文档](http://docs.phalconphp.com/zh/latest/index.html)
 
@@ -35,10 +33,4 @@
 
 ## 关于
 主页: [https://github.com/xxtime/phalcon](https://github.com/xxtime/phalcon)  
-作者: [https://www.xxtime.com](https://www.xxtime.com)  
-=======
-
->>>>>>> 3e3e37e6fcb61e2d9a477613e2a33308c8a81b11
-=======
-
->>>>>>> 3e3e37e6fcb61e2d9a477613e2a33308c8a81b11
+作者: [https://www.xxtime.com](https://www.xxtime.com)

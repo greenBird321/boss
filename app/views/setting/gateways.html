@@ -1,0 +1,57 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Pay Manage</h1>
+    </div>
+
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <ul class="nav nav-pills pull-right">
+                    <li><a href="/setting/payment?do=notify" data-pjax=""></i> 回调设置 </a></li>
+                    <li><a href="/setting/payment?do=create" data-pjax=""><i class="fa fa-plus"></i> 添加 </a></li>
+                </ul>
+                支付管理
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped b-t b-light">
+                    <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>付费类型</th>
+                        <th>货币</th>
+                        <th>网关</th>
+                        <th>子网关</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if gateways is defined %}
+                    {% for item in gateways %}
+                    <tr>
+                        <td>{{item['name']}}
+                            {%if item['visible'] == 1%}
+                            <span class="label bg-success" title="">支付中心</span>
+                            {% endif %}
+
+                            {%if item['sandbox'] == 1%}
+                            <span class="label bg-warning" title="">沙箱</span>
+                            {% else %}
+                            {% endif %}
+                        </td>
+                        <td>{{item['typename']}} </td>
+                        <td>{{item['currency']}} </td>
+                        <td>{{item['gateway']}}</td>
+                        <td>{{item['sub']}} </td>
+                        <td>
+                            <a href="/setting/payment?do=edit&id={{item['id']}}" data-pjax="" class="btn btn-sm btn-info">编辑</a>
+                            <!--<a href="/setting/removepay?id={{item['id']}}" class="btn btn-sm btn-danger" ng-click="" onclick="return confirm('确认删除?')">del</a>-->
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

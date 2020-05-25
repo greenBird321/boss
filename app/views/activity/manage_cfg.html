@@ -1,0 +1,172 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Activity Manage</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <ul class="nav nav-pills pull-right">
+                    <li><a href="/activity/import" data-pjax=""><i class="fa icon-doc"></i> 导入 </a></li>
+                    <li><a href="javascript:void(0);"><i class="fa icon-cloud-download"></i> 导出 </a></li>
+                </ul>
+                活动管理
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="padder-v padder">
+                        <div class="m-b-md">
+                            <form class="form-horizontal ng-pristine ng-valid" method="post" action="/activity/manage?do=cfg">
+                                <input name="id" value="{{activityid}}" type="hidden">
+
+                                <div class="line line-dashed b-b line-lg pull-in"></div>
+                                <div class="form-group">
+                                    <label class="col-sm-1 ">档位:</label>
+                                    <label class="col-sm-2 ">礼包ID:</label>
+                                    <label class="col-sm-1 ">排序:</label>
+                                    <label class="col-sm-4 ">标题:</label>
+                                    <label class="col-sm-4 ">描述:</label>
+                                </div>
+                                {% for item in activitycfg %}
+                                <div class="form-group">
+                                    <input name="cfgid[]" value="{{item['id']}}" type="hidden">
+                                    <div class="col-sm-1">
+                                        <input name="step[{{item['id']}}]" value="{{item['step']}}" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-2">
+                                        <input name="prop[{{item['id']}}]" value="{{item['prop']}}" class="form-control" type="text">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <input name="sort[{{item['id']}}]" value="{{item['sort']}}" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <input name="title[{{item['id']}}]" value="{{item['title']}}" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <input name="content[{{item['id']}}]" value="{{item['content']}}" class="form-control" type="text">
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                <div class="form-group">
+                                    <div class="col-sm-1">
+                                        <input name="stepNew[]" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-2">
+                                        <input name="propNew[]" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-1">
+                                        <input name="sortNew[]" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <input name="titleNew[]" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <input name="contentNew[]" class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-1">
+                                        <input name="stepNew[]" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-2">
+                                        <input name="propNew[]" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-1">
+                                        <input name="sortNew[]" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <input name="titleNew[]" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <input name="contentNew[]" class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-1">
+                                        <input name="stepNew[]" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-2">
+                                        <input name="propNew[]" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-1">
+                                        <input name="sortNew[]" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <input name="titleNew[]" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <input name="contentNew[]" class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-1">
+                                        <input name="stepNew[]" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-2">
+                                        <input name="propNew[]" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-1">
+                                        <input name="sortNew[]" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <input name="titleNew[]" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <input name="contentNew[]" class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-1">
+                                        <input name="stepNew[]" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-2">
+                                        <input name="propNew[]" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-1">
+                                        <input name="sortNew[]" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <input name="titleNew[]" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <input name="contentNew[]" class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="line line-dashed b-b line-lg pull-in"></div>
+                                <div class="form-group">
+                                    <div class="col-sm-8 col-sm-offset-2">
+                                        <button type="submit" class="btn btn-info">确认</button>
+                                        <a class="btn btn-default" onclick="javascript:history.back(-1)">取消</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

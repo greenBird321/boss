@@ -1,0 +1,104 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Server Manage</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <ul class="nav nav-pills pull-right">
+                            <li><a href="javascript:history.back(-1)"><i class="fa fa-mail-reply-all"></i> 返回 </a></li>
+                        </ul>
+                        <i class="fa fa-cube"></i> 服务器信息
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal " data-pjax="" method="post" action="/Server/edit" role="form">
+                            <input type="hidden" name="id" value="{{server['id']}}">
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">区服名称</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="name" value="{{server['name']}}" class="form-control" placeholder="" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">IP地址</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="host" value="{{server['host']}}" class="form-control" placeholder="" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">端口</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="port" value="{{server['port']}}" class="form-control" placeholder="">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">状态</label>
+                                <div class="col-sm-8">
+                                    <label class="checkbox-inline i-checks">
+                                        <input name="open_mode" type="radio" value="on" {% if server['open_mode'] == 'on' %}checked{% endif %} ><i></i> On
+                                    </label>
+                                    <label class="checkbox-inline i-checks">
+                                        <input name="open_mode" type="radio" value="sandbox" {% if server['open_mode'] == 'sandbox' %}checked{% endif %}><i></i> Sandbox
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">是否爆满</label>
+                                <div class="col-sm-8">
+                                    <label class="checkbox-inline i-checks">
+                                        <input name="full_mode" type="radio" value="Yes" {% if server['full_mode'] == 'Yes' %}checked{% endif %} ><i></i> Yes
+                                    </label>
+                                    <label class="checkbox-inline i-checks">
+                                        <input name="full_mode" type="radio" value="No" {% if server['full_mode'] == 'No' %}checked{% endif %}><i></i> No
+                                    </label>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">服务器颜色</label>
+                                <div class="col-sm-8">
+                                    <label class="checkbox-inline i-checks">
+                                        <input name="color_mode" type="radio" value="Green" {% if server['color_mode'] == 'Green' %}checked{% endif %} ><i></i> Green
+                                    </label>
+                                    <label class="checkbox-inline i-checks">
+                                        <input name="color_mode" type="radio" value="Red" {% if server['color_mode'] == 'Red' %}checked{% endif %}><i></i> Red
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">是否可见</label>
+                                <div class="col-sm-8">
+                                    <label class="checkbox-inline i-checks">
+                                        <input name="visible_mode" type="radio" value="Yes" {% if server['visible_mode'] == 'Yes' %}checked{% endif %} ><i></i> Yes
+                                    </label>
+                                    <label class="checkbox-inline i-checks">
+                                        <input name="visible_mode" type="radio" value="No" {% if server['visible_mode'] == 'No' %}checked{% endif %}><i></i> No
+                                    </label>
+                                </div>
+                            </div>
+
+
+
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <button type="submit" class="btn btn-info">确认修改</button>
+                                    <a class="btn btn-default" onclick="javascript:history.back(-1)">取消修改</a>
+                                    <a href="/server/remove?id={{server['id']}}" class="btn btn-danger pull-right" onclick="return confirm('确认删除?')">
+                                        <i class="fa fa-trash-o text"></i><span class="text">删除</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

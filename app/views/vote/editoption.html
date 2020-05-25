@@ -1,0 +1,76 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Activity Manage</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <ul class="nav nav-pills pull-right">
+                    <li><a href="javascript:history.back(-1)"><i class="fa fa-mail-reply-all"></i> 返回 </a></li>
+                </ul>
+                活动管理
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="padder-v padder">
+                        <div class="m-b-md">
+                            <form class="form-horizontal ng-pristine ng-valid" data-pjax="" method="post" action="/vote/editoption">
+                                <input name="id" value="{{vote['id']}}" type="hidden">
+                                <input name="group_id" value="{{vote['group_id']}}" type="hidden">
+
+                                <div class="line line-dashed b-b line-lg pull-in"></div>
+                                <div class="form-group">
+                                    <label for="firstname" class="col-sm-2 control-label">题目</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="subject" value="{{vote['subject']}}" class="form-control" id="subject" placeholder="" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="firstname" class="col-sm-2 control-label">答案</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="answer" value="{{vote['answer']}}" class="form-control" id="answer" placeholder="" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="firstname" class="col-sm-2 control-label">选项1</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="option_1" value="{{vote['option_1']}}" class="form-control" id="option_1" placeholder="" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="firstname" class="col-sm-2 control-label">选项2</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="option_2" value="{{vote['option_2']}}" class="form-control" id="option_2" placeholder="" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="firstname" class="col-sm-2 control-label">选项3</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="option_3" value="{{vote['option_3']}}" class="form-control" id="option_3" placeholder="" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="firstname" class="col-sm-2 control-label">选项4</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="option_4" value="{{vote['option_4']}}" class="form-control" id="option_4" placeholder="" >
+                                    </div>
+                                </div>
+                                <div class="line line-dashed b-b line-lg pull-in"></div>
+                                <div class="form-group">
+                                    <div class="col-sm-8 col-sm-offset-2">
+                                        <button type="submit" class="btn btn-info">确认修改</button>
+                                        <a class="btn btn-default" onclick="javascript:history.back(-1)">取消修改</a>
+                                        <a href="/vote/removeoption?id={{vote['id']}}" class="btn btn-danger pull-right" onclick="return confirm('确认删除?')">
+                                            <i class="fa fa-trash-o text"></i><span class="text">删除</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

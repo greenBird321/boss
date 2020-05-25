@@ -1,0 +1,150 @@
+<style type="text/css">
+    .app-name {
+        display: block;
+        width: 150px;
+    }
+
+    .list-group-item {
+        display: block;
+        width: 200px;
+    }
+
+    .vbox-miniheight {
+        min-height: 560px;
+    }
+
+    .b-c-change > a:hover {
+        background-color: #edf1f2;
+        border-left-color: #23b7e5;
+    }
+
+    .server-change > li:hover {
+        background-color: #edf1f2;
+    }
+
+    .ng-scope {
+        background: #fff;
+    }
+
+    .vbox {
+        background: #fff;
+    }
+
+    .bg-light.lt, .bg-light .lt {
+        background-color: #fff;
+    }
+</style>
+
+<ul class="nav navbar-nav navbar-right">
+    <li id="game_change" class="dropdown pos-stc">
+        <div class="hbox hbox-auto-xs bg-light game  ng-scope">
+            <!-- <div class="col w-lg lt b-r"> -->
+            <!-- <div class="vbox vbox-miniheight"> -->
+            <div class="wrapper">
+                <div class="h4">游戏分类</div>
+            </div>
+            <div class="wrapper b-t m-t-xxs">
+                <div class="input-group">
+                    <span class="input-group-addon input-sm"><i class="fa fa-search"></i></span>
+                    <input type="text" class="form-control input-sm" placeholder="游戏搜索" aria-invalid="false"
+                           style="width:200px;">
+                </div>
+            </div>
+            <div class="row-row">
+                <div class="cell scrollable hover">
+                    <div class="cell-inner">
+                        <div class="padder">
+                            {% for index,app in apps %}
+                            <div class="b-c-change list-group">
+                                <a class="list-group-item b-l-3x hover-anchor" href="#{{index}}" data-toggle="tab">
+                                    <span class="app-name">{{app["info"]["name"]}}</span>
+                                    <small class="text-muted ng-binding">版本数量: <span class="app-version">{{app["data"]|length}}</span>
+                                    </small>
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col game-name">
+                <div class="vbox">
+                    <div class="wrapper bg-light lt b-b">
+                        <span class="text-muted">游戏名称: <span id="dynamic_write_name"></span></span>
+                        <span class="text-muted pull-right">版本数量: <span id="dynamic_write_version"></span></span>
+                    </div>
+                    <div class="row-row">
+                        <div class="cell" style="background-color: #fff;">
+                            <div class="cell-inner">
+                                <div class="tab-content">
+                                    {% for index,app in apps %}
+                                    <div class="tab-pane fade" id="{{index}}">
+                                        <div class="panel">
+                                            <div class="panel-body" style="padding: 0;">
+                                                <ul class="list-group list-group-lg m-b-none server-change">
+                                                    {% for key,detail in app["data"] %}
+                                                    <li class="list-group-item">
+                                                        <a href="<?php if($detail['id']==1016){ echo 'http://hk.boss.gamehetu.com'; }else{ echo '/utils/setgameversion?id='.$detail['id']; }?>"
+                                                           class="show-btn">{{detail["name"]}}</a>
+                                                        <label style="padding-left: 10px;"></label><!--预留-->
+                                                    </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- </div> -->
+        <!-- </div> -->
+    </li>
+</ul>
+<script>
+    $(document).ready(function () {
+        // 游戏分类选中样式
+        $('.b-c-change a').click(function () {
+            $('.b-c-change').find('a').css({"border-left-color": "#e7ecee"});
+            $(this).css({"border-left-color": "#23b7e5"});
+
+            $('#dynamic_write_name').text($(this).find('.app-name').text());
+            $('#dynamic_write_version').text($(this).find('.app-version').text());
+        });
+
+        var game_change = $('#game_change');
+
+        // 自定义控制 dropdown 效果的开闭状态
+        game_change.on('hide.bs.dropdown', function () {
+            // do something…
+            return false;
+        });
+
+        // 按钮切换状态1(状态1: 真实按钮, 状态2: 伪造按钮)
+        $('#g_c_show').on('click', function () {
+            $(this).hide();
+            $('#g_c_hide').show();
+        });
+
+        // 按钮切换状态2
+        $('#g_c_hide').click(function () {
+            game_change.closest(".dropdown").toggleClass("open");
+        });
+
+        // 区服选择样式调整
+        $('.server-change').on('click', 'li', function (e) {
+            // var _ele = e.target;
+            // if(_ele.nodeName=='LI'){} 预防节点递归导致的报错 Maximum call stack size exceeded
+            // game_change.closest(".dropdown").toggleClass("open");
+
+            var txt = '切换至【' + $(this).find('a').text() + '】, 请稍后...';
+            loading(txt);
+        });
+    });
+</script>

@@ -1,0 +1,112 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">设置 - 时区设置 <span><?php if(!empty($_SESSION['zone_text'])){  echo '-  当前时区：'. $_SESSION['zone_text']; }?> </span></h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="row row-sm">
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="panel b-a">
+                    <div class="panel-heading wrapper-xs bg-success no-border">
+                    </div>
+                    <div class="wrapper text-center">
+                        <h2 class="m-t-none">
+                            <span class="text-2x text-lt">亚洲</span>
+                        </h2>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="javascript:void(0);" timeZone="Asia/Shanghai" class="btn btn-success font-bold m-xs">上海</a>
+                            <a href="javascript:void(0);" timeZone="Asia/Taipei" class="btn btn-success font-bold m-xs">台北</a>
+                            <a href="javascript:void(0);" timeZone="Asia/Seoul" class="btn btn-success font-bold m-xs">韩国</a>
+                            <a href="javascript:void(0);" timeZone="Asia/Tokyo" class="btn btn-success font-bold m-xs">日本</a>
+                            <a href="javascript:void(0);" timeZone="Asia/Bangkok" class="btn btn-success font-bold m-xs">泰国</a>
+                            <a href="javascript:void(0);" timeZone="Asia/Hanoi" class="btn btn-success font-bold m-xs">越南</a>
+                            <a href="javascript:void(0);" timeZone="Asia/Singapore" class="btn btn-success font-bold m-xs">马来西亚</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="panel b-a">
+                    <div class="panel-heading wrapper-xs bg-success no-border">
+                    </div>
+                    <div class="wrapper text-center">
+                        <h2 class="m-t-none">
+                            <span class="text-2x text-lt">欧洲</span>
+                        </h2>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="javascript:void(0);" timeZone="Europe/London" class="btn btn-success font-bold m-xs">伦敦</a>
+                            <a href="javascript:void(0);" timeZone="Europe/Paris" class="btn btn-success font-bold m-xs">巴黎</a>
+                            <a href="javascript:void(0);" timeZone="Europe/Rome" class="btn btn-success font-bold m-xs">罗马</a>
+                            <a href="javascript:void(0);" timeZone="Europe/Berlin" class="btn btn-success font-bold m-xs">柏林</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="panel b-a">
+                    <div class="panel-heading wrapper-xs bg-success no-border">
+                    </div>
+                    <div class="wrapper text-center">
+                        <h2 class="m-t-none">
+                            <span class="text-2x text-lt">美洲</span>
+                        </h2>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="javascript:void(0);" timeZone="America/Los_Angeles" class="btn btn-success font-bold m-xs">洛杉矶</a>
+                            <a href="javascript:void(0);" timeZone="America/Chicago" class="btn btn-success font-bold m-xs">芝加哥</a>
+                            <a href="javascript:void(0);" timeZone="America/Vancouver" class="btn btn-success font-bold m-xs">温哥华</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel">提示</h4>
+            </div>
+            <div class="modal-body font-thin h1">
+                <span>时区切换成功</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $(".btn-success").click(function () {
+            var timeZone = $(this).attr('timeZone');
+            var zonetext = $(this).text();
+
+            $.ajax({
+                url:'/setting/timezone',
+                type:'POST', //GET
+                async:true,    //或false,是否异步
+                data:{
+                    timeZone:timeZone,
+                    zonetext:zonetext,
+                },
+                dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+                success:function(respon){
+                    if(respon['error'] == 0){
+                        $('.m-n span').html(' - 当前时区：'+zonetext);
+                        $('.modal-body').html('<span>'+ respon['data'] +'</span>');
+                        $('#myModal').modal();
+                    }
+                }
+            });
+        });
+    });
+</script>

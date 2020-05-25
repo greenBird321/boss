@@ -1,0 +1,120 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Card Manage</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <ul class="nav nav-pills pull-right">
+                            <li><a href="javascript:history.back(-1)"><i class="fa fa-mail-reply-all"></i> 返回 </a></li>
+                        </ul>
+                        <i class="fa fa-cube"></i> 卡片信息
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal" data-pjax="" method="post" action="/card/manage?do=create" role="form">
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">标题</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="title" class="form-control" id="title" placeholder="标题" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastname" class="col-sm-2 control-label">卡片类型</label>
+                                <div class="col-sm-4">
+                                    <select name="type" class="form-control" required>
+                                        <option value="">请选择</option>
+                                        <option value="cash">钻石卡</option>
+                                        <option value="discount">折扣卡</option>
+                                        <option value="prop">道具卡</option>
+                                        <option value="register">注册码</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastname" class="col-sm-2 control-label">开始时间</label>
+                                <div class="col-sm-4" ng-controller="DatepickerDemoCtrl">
+                                    <div class="input-group w-full">
+                                        <input class="form_datetime form-control" type="text" name="start_time" size="16" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastname" class="col-sm-2 control-label">过期时间</label>
+                                <div class="col-sm-4" ng-controller="DatepickerDemoCtrl">
+                                    <div class="input-group w-full">
+                                        <input class="form_datetime form-control" type="text" name="expired_in" size="16" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">数值或道具</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="data" class="form-control" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">礼品卡数量</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="count" class="form-control" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">每个人参与次数</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="limit_times" class="form-control" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">每个码可以使用次数</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="code_limit_times" class="form-control" placeholder="0代表可无限使用,-1则一码一人,非负数为此码的使用次数">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastname" class="col-sm-2 control-label">介绍</label>
+                                <div class="col-sm-8">
+                                    <div id="summernote"></div>
+                                </div>
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <textarea class="hidden" name="formcontent" id="formcontent"></textarea>
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <button type="submit" class="btn btn-info">确认添加</button>
+                                    <a class="btn btn-default" onclick="javascript:history.back(-1)">取消添加</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#summernote').on('summernote.change', function(we, contents, $editable) {
+            var markupStr = $('#summernote').summernote('code');
+            $('#formcontent').val(markupStr);
+        });
+
+        $("#summernote").summernote({
+            height: 300,                 // set editor height
+        });
+
+        $(".form_datetime").datetimepicker({
+            format: "yyyy-mm-dd hh:00:ss",
+            autoclose: true,
+            todayBtn: true,
+            todayHighlight: true,
+            showMeridian: true,
+            pickerPosition: "bottom-left",
+            language: 'zh-CN',//中文，需要引用zh-CN.js包
+            startView: 2,//月视图
+            minView: 1, //日期时间选择器所能够提供的最精确的时间选择视图
+        });
+    });
+</script>

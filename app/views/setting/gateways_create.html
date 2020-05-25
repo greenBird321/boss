@@ -1,0 +1,111 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Pay Manage</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <ul class="nav nav-pills pull-right">
+                            <li><a href="javascript:history.back(-1)"><i class="fa fa-mail-reply-all"></i> 返回 </a></li>
+                        </ul>
+                        <i class="fa fa-cube"></i> 支付信息
+                    </div>
+                    <div class="panel-body">
+                        <form data-pjax class="form-horizontal " method="post" action="/setting/payment?do=create" role="form">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">名称</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="name" class="form-control" placeholder="显示的名称" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">网关</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="gateway" class="form-control" placeholder="例: alipay" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">子网关</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="sub" class="form-control" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">付费类型</label>
+                                <div class="col-sm-4">
+                                    <select name="type" class="form-control">
+                                        <option value="wallet">钱包</option>
+                                        <option value="card">预付卡</option>
+                                        <option value="telecom">运营商</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">货币</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="currency" class="form-control" placeholder="例: USD">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">父级ID</label>
+                                <div class="col-sm-8">
+                                    <select name="parent" class="form-control">
+                                        <option value="0">无</option>
+                                        {% for item in parent %}
+                                        <option value="{{item['id']}}">{{item['name']}} - [{{item['gateway']}}]</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">排序</label>
+                                <div class="col-sm-8">
+                                    <input ui-jq="TouchSpin" name="sort" type="text" value="0" class="form-control" data-min='0' data-max="1000" data-verticalbuttons="true" data-verticalupclass="fa fa-caret-up"  data-verticaldownclass="fa fa-caret-down">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">支付中心</label>
+                                <div class="col-sm-8">
+                                    <label class="i-switch bg-info m-t-xs m-r">
+                                        <input type="checkbox" name="visible" value="1" checked>
+                                        <i></i>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">沙箱</label>
+                                <div class="col-sm-8">
+                                    <label class="i-switch bg-info m-t-xs m-r">
+                                        <input type="checkbox" name="sandbox" value="1" >
+                                        <i></i>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">备注</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="remark" class="form-control" placeholder="备注">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">提示信息</label>
+                                <div class="col-sm-8">
+                                    <textarea name="tips" class="form-control" rows="6" placeholder="提示信息, 支付中心提示"></textarea>
+                                </div>
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <button type="submit" class="btn btn-info">确认添加</button>
+                                    <a class="btn btn-default" onclick="javascript:history.back(-1)">取消添加</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

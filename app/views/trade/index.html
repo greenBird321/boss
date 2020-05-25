@@ -1,0 +1,154 @@
+<style>
+    .table-striped > thead > tr > th, .table-striped > tbody > tr > td
+    {
+        text-align: center;
+    }
+</style>
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Trade Manage</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <a data-toggle="collapse" data-parent="#accordion"
+                   href="#collapseOne">
+                    筛选条件，再次点击隐藏。
+                </a>
+                <form id="collapseOne" action="/trade/index" class="form-inline panel-collapse collapse {%if isquery==1%}in{%endif%}" data-pjax="" role="form">
+                    <div class="form-group padder-v m-l m-r">
+                        <label>订单ID</label>
+                        <input type="text" class="m-l-sm m-r-sm form-control" name="transaction" value="{{query['transaction']}}">
+                    </div>
+                    <div class="form-group">
+                        <label>账号ID</label>
+                        <input type="text" class="m-l-sm m-r-sm form-control" name="user_id" value="{{query['user_id']}}">
+                    </div>
+                    <div class="form-group">
+                        <label>支付状态</label>
+                        <select name="status" class="m-l-sm m-r-sm form-control">
+                            <option value="">请选择</option>
+                            <option value="pending" {%if query['status']=='pending'%}selected{%endif%}>等待</option>
+                            <option value="closed" {%if query['status']=='closed'%}selected{%endif%}>关闭</option>
+                            <option value="failed" {%if query['status']=='failed'%}selected{%endif%}>失败</option>
+                            <option value="refund" {%if query['status']=='refund'%}selected{%endif%}>退款</option>
+                            <option value="paid" {%if query['status']=='paid'%}selected{%endif%}>已付</option>
+                            <option value="complete" {%if query['status']=='complete'%}selected{%endif%}>完成</option>
+                            <option value="sandbox" {%if query['status']=='sandbox'%}selected{%endif%}>沙箱</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>支付网关</label>
+                        <select name="gateway" class="m-l-sm m-r-sm form-control">
+                            <option value="">请选择</option>
+                            <option value="apple" {%if query['gateway']=='apple'%}selected{%endif%}>苹果</option>
+                            <option value="google" {%if query['gateway']=='google'%}selected{%endif%}>google</option>
+                            <option value="alipay" {%if query['gateway']=='alipay'%}selected{%endif%}>支付宝</option>
+                            <option value="weixin" {%if query['gateway']=='weixin'%}selected{%endif%}>微信</option>
+                            <option value="paypal" {%if query['gateway']=='paypal'%}selected{%endif%}>paypal</option>
+                            <option value="paymentwall" {%if query['gateway']=='paymentwall'%}selected{%endif%}>海外支付</option>
+                            <option value="mycard" {%if query['gateway']=='mycard'%}selected{%endif%}>mycard</option>
+                            <option value="mol" {%if query['gateway']=='mol'%}selected{%endif%}>摩尔</option>
+                            <option value="unipin" {%if query['gateway']=='unipin'%}selected{%endif%}>unipin</option>
+                            <option value="others" {%if query['gateway']=='others'%}selected{%endif%}>其他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>产品ID</label>
+                        <input type="text" class="m-l-sm m-r-sm form-control" name="product_id" value="{{query['product_id']}}">
+                    </div>
+                    <div class="form-group">
+                        <label>自定义</label>
+                        <input type="text" class="m-l-sm m-r-sm form-control" name="custom" value="{{query['custom']}}">
+                    </div>
+                    <div class="form-group">
+                        <label>网关ID</label>
+                        <input type="text" class="m-l-sm m-r-sm form-control" name="trade_no" value="{{query['trade_no']}}">
+                    </div>
+                    <div class="form-group">
+                        <label>开始时间</label>
+                        <input type="text" class="m-l-sm m-r-sm form-control form_datetime" name="start_time" value="{{query['start_time']}}">
+                    </div>
+                    <div class="form-group">
+                        <label>结束时间</label>
+                        <input type="text" class="m-l-sm m-r-sm form-control form_datetime" name="end_time" value="{{query['end_time']}}">
+                    </div>
+                    <span ng-controller="ModalDemoCtrl">
+                        <button class="btn btn-success">筛选</button>
+                    </span>
+                </form>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="panel-heading">
+                <!--<ul class="nav nav-pills pull-right">-->
+                <!--<li><a href="/blacklist/create"><i class="fa fa-plus"></i> 创建账号 </a></li>-->
+                <!--</ul>-->
+                订单管理
+            </div>
+            <div class="table-responsive">
+
+                <table class="table table-striped b-t b-light">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>订单ID</th>
+                        <th>账号ID</th>
+                        <th>状态</th>
+                        <th>币种</th>
+                        <th>金额</th>
+                        <th>产品ID</th>
+                        <th>自定义</th>
+                        <th>网关</th>
+                        <th>创建时间</th>
+                        <th>更多</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in trade %}
+                    <tr>
+                        <td>{{item['id']}}</td>
+                        <td>{{item['transaction']}}</td>
+                        <td>{{item['user_id']}}</td>
+                        <td>{{item['status']}}</td>
+                        <td>{{item['currency']}}</td>
+                        <td>{{item['amount']}}</td>
+                        <td>{{item['product_id']}}</td>
+                        <td>{{item['custom']}}</td>
+                        <td>{{item['gateway']}}</td>
+                        <td>{{item['create_time']}}</td>
+                        <td>
+                            <a class="btn btn-sm btn-info" data-pjax="" href="/trade/view?id={{item['id']}}">查看</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <footer class="panel-footer">
+                <div class="row">
+                    <div class="col-sm-12 text-right text-center-xs">
+                        <ul class="pagination pagination-sm m-t-none m-b-none">
+                            {{page}}
+                        </ul>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $(".form_datetime").datetimepicker({
+            format: "yyyy-mm-dd",
+            autoclose: true,
+            todayBtn: true,
+            todayHighlight: true,
+            showMeridian: true,
+            pickerPosition: "bottom-left",
+            language: 'zh-CN',//中文，需要引用zh-CN.js包
+            startView: 2,//月视图
+            minView: 2//日期时间选择器所能够提供的最精确的时间选择视图
+        });
+    });
+</script>

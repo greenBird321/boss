@@ -1,0 +1,115 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Pay Manage</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <ul class="nav nav-pills pull-right">
+                            <li><a href="javascript:history.back(-1)"><i class="fa fa-mail-reply-all"></i> 返回 </a></li>
+                        </ul>
+                        <i class="fa fa-cube"></i> 支付信息
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal " data-pjax="" method="post" action="/setting/payment?do=edit"  role="form">
+                            <input type="hidden" name="id" value="{{gateways['id']}}">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">名称</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="name" class="form-control" placeholder="" value="{{gateways['name']}}" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">网关</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="gateway" class="form-control" placeholder="" value="{{gateways['gateway']}}" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">子网关</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="sub" class="form-control" placeholder="" value="{{gateways['sub']}}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">付费类型</label>
+                                <div class="col-sm-4">
+                                    <select name="type" class="form-control">
+                                        <option value="wallet" {%if gateways['type']=='wallet'%}selected{%endif%}>钱包</option>
+                                        <option value="card" {%if gateways['type']=='card'%}selected{%endif%}>预付卡</option>
+                                        <option value="telecom" {%if gateways['type']=='telecom'%}selected{%endif%}>运营商</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">货币</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="currency" class="form-control" value="{{gateways['currency']}}" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">父级ID</label>
+                                <div class="col-sm-8">
+                                    <select name="parent" class="form-control">
+                                        <option value="0" {% if gateways['parent'] == 0 %}selected{% endif %}>无</option>
+                                        {% for item in parent %}
+                                        <option value="{{item['id']}}" {% if gateways['parent'] == item['id'] %}selected{% endif %}>{{item['name']}} - [{{item['gateway']}}]</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">排序</label>
+                                <div class="col-sm-8">
+                                    <input ui-jq="TouchSpin" name="sort" type="text" value="{{gateways['sort']}}" class="form-control" data-min='0' data-max="1000" data-verticalbuttons="true" data-verticalupclass="fa fa-caret-up"  data-verticaldownclass="fa fa-caret-down">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">支付中心</label>
+                                <div class="col-sm-8">
+                                    <label class="i-switch bg-info m-t-xs m-r">
+                                        <input type="checkbox" name="visible" value="1" {%if gateways['visible']==1%}checked{%endif%}>
+                                        <i></i>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">沙箱</label>
+                                <div class="col-sm-8">
+                                    <label class="i-switch bg-info m-t-xs m-r">
+                                        <input type="checkbox" name="sandbox" value="1" {%if gateways['sandbox']==1%}checked{%endif%}>
+                                        <i></i>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">备注</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="remark" class="form-control" value="{{gateways['remark']}}" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">提示信息</label>
+                                <div class="col-sm-8">
+                                    <textarea rows="6" name="tips" class="form-control" placeholder="">{{gateways['tips']}}</textarea>
+                                </div>
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <button type="submit" class="btn btn-info">确认修改</button>
+                                    <a class="btn btn-default" onclick="javascript:history.back(-1)">取消修改</a>
+                                    <a href="/setting/payment?do=remove&id={{gateways['id']}}" class="btn btn-danger pull-right" onclick="return confirm('确认删除?')">
+                                        <i class="fa fa-trash-o text"></i><span class="text">删除</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

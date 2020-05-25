@@ -1,0 +1,102 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Notice Manage</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <ul class="nav nav-pills pull-right">
+                    <li><a href="/notice/import" data-pjax=""><i class="fa icon-doc"></i> 导入 </a></li>
+                    <li><a href="javascript:void(0);"><i class="fa icon-cloud-download"></i> 导出 </a></li>
+                    <li><a href="javascript:void(0);" id="btn_add"><i class="fa fa-eye"></i> 查询 </a></li>
+                    <li><a href="/notice/create" data-pjax=""><i class="fa fa-plus"></i> 添加 </a></li>
+                </ul>
+                公告管理
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="padder-v padder">
+                        <div class="m-b-md">
+                            {% for item in lists %}
+                            <div class="alert alert-dismissable">
+                                <div ng-transclude="">
+                                    <a href="/notice/edit?id={{item['id']}}" class="text-info m-b-xs" style="font-size: x-large" data-pjax="">{{item['title']}}</a>
+                                    {%if item['status'] != 1%}
+                                    <p class="label bg-warning" title="">限制</p>
+                                    {% endif %}
+                                    <p>{{item['content']}}</p>
+                                    <i class="fa fa-clock-o text-muted"></i><span class="<?php if( strtotime($item['end_time']) < time()){ ?>text-danger-dk<?php }?>">{{item['start_time']}} - {{item['end_time']}}</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <footer class="panel-footer">
+                            <div class="row">
+                                <div class="col-sm-12 text-right text-center-xs">
+                                    <ul class="pagination pagination-sm m-t-none m-b-none">
+                                        {{page}}
+                                    </ul>
+                                </div>
+                            </div>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <form id="collapseOne" role="form" action="/notice/index" method="post" data-pjax="">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel">公告查询</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="txt_parentdepartment">标题</label>
+                    <input type="text" name="title" class="form-control" value="{{query['title']}}" id="txt_parentdepartment" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label for="txt_parentdepartment">开始时间</label>
+                    <input type="text" name="start_time" class="form-control form_datetime" value="{{query['start_time']}}" placeholder="">
+                </div>
+
+                <div class="form-group">
+                    <label for="txt_parentdepartment">结束时间</label>
+                    <input type="text"  name="end_time" class="form-control form_datetime" value="{{query['end_time']}}" placeholder="">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>查询</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $("#btn_add").click(function () {
+            $('#myModal').modal();
+        });
+        $(".btn-primary").click(function () {
+            $('#myModal').modal('hide');
+            setTimeout("$('#collapseOne').submit()",500);
+        });
+
+        $(".form_datetime").datetimepicker({
+            format: "yyyy-mm-dd hh:00:00",
+            autoclose: true,
+            todayBtn: true,
+            todayHighlight: true,
+            showMeridian: true,
+            pickerPosition: "bottom-left",
+            language: 'zh-CN',//中文，需要引用zh-CN.js包
+            startView: 2,//月视图
+            minView: 1//日期时间选择器所能够提供的最精确的时间选择视图
+        });
+    });
+</script>

@@ -1,0 +1,134 @@
+<style>
+    #chartdiv {
+        width: 100%;
+        height: 500px;
+    }
+
+    .amcharts-export-menu-top-right {
+        top: 10px;
+        right: 0;
+    }
+    #example_filter{
+        text-align: right;
+    }
+    #example_paginate{
+        text-align: right;
+    }
+    #example_paginate ul{
+        margin: 0px;
+    }
+    #example_info{
+        padding-top: 8px;
+        white-space:nowrap;
+    }
+
+    #example > thead > tr > th, #example > tbody > tr > td
+    {
+        text-align: center;
+    }
+</style>
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Product Manage</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <ul class="nav nav-pills pull-right">
+                    <li><a href="/product/import" data-pjax=""><i class="fa icon-doc"></i> 导入 </a></li>
+                    <li><a href="javascript:void(0);"><i class="fa icon-cloud-download"></i> 导出 </a></li>
+                    <li><a href="/product/create" data-pjax=""><i class="fa fa-plus"></i> 添加 </a></li>
+                </ul>
+                产品管理
+            </div>
+            <div class="table-responsive">
+                <div ng-controller="TabsDemoCtrl">
+                    <ul id="myTab" class="nav nav-tabs">
+                        {% for key,item in proData %}
+                        <li {% if key == 0 %}class="active"{% endif %}>
+                            <a href="#{{item['gateway']}}" data-toggle="tab">{{item['name']}}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div id="myTabContent" class="tab-content">
+                        {% for key,item in proData %}
+                        <div class="tab-pane fade in {% if key == 0 %}active{% endif %}" id="{{item['gateway']}}" style="background: #fff">
+                            <table   id="example" class="table table-striped b-t b-b">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>产品名称</th>
+                                    <th>产品ID</th>
+                                    <th>价格</th>
+                                    <th>钻石</th>
+                                    <th>创建时间</th>
+                                    <th>更新时间</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for value in item['product'] %}
+                                <tr>
+                                    <td>{{value['id']}}</td>
+                                    <td>{{value['name']}}</td>
+                                    <td>{{value['product_id']}}</td>
+                                    <td>{{value['currency']}}&nbsp;{{value['price']}}</td>
+                                    <td>{{value['coin']}}</td>
+                                    <td>{{value['create_time']}}</td>
+                                    <td>{{value['update_time']}}</td>
+                                    <td>
+                                        {%if value['status'] == 1%}
+                                        <span class="label bg-success" title="">正常</span>
+                                        {% else %}
+                                        <span class="label bg-warning" title="">限制</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-sm btn-info" data-pjax="" href="/product/edit?id={{value['id']}}">修改</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function()
+    {
+        $(".tab-pane > table").dataTable(
+            {
+                'language': {
+                    'emptyTable'    : '没有数据',
+                    'search'        : '搜索:',
+                    'zeroRecords'   : '没有数据'
+                },
+
+                "bSort"         : false,
+                "paging"        : false,
+                "bLengthChange" : false,
+                "bInfo"         : false,
+                "columns"       : [
+                    { "width": "5%" },
+                    { "width": "17%" },
+                    { "width": "17%" },
+                    { "width": "10%" },
+                    { "width": "10%" },
+                    { "width": "15%" },
+                    { "width": "15%" },
+                    { "width": "8%" },
+                    { "width": "8%" }
+                ]
+            }
+        );
+    })
+</script>
+

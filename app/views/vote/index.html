@@ -1,0 +1,120 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Vote Manage</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <ul class="nav nav-pills pull-right">
+                    <li><a href="/vote/import" data-pjax=""><i class="fa icon-doc"></i> 导入 </a></li>
+                    <li><a href="javascript:void(0);"><i class="fa icon-cloud-download"></i> 导出 </a></li>
+                    <li><a href="javascript:void(0);" id="btn_add"><i class="fa fa-eye"></i> 查询 </a></li>
+                    <li><a href="/vote/create" data-pjax=""><i class="fa fa-plus"></i> 添加 </a></li>
+                </ul>
+                投票管理
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="padder-v padder">
+                        <div class="m-b-md">
+                            <div class="panel-body">
+                                {% for item in lists %}
+                                <article class="media">
+                                    <div class="pull-left">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x text-info"></i>
+                                            <i class="fa fa-puzzle-piece fa-stack-1x text-white"></i>
+                                        </span>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a class="" href="/vote/createoption?id={{item['id']}}" data-pjax=""><i class="close icon-anchor m-t-lg m-r"></i></a>
+                                        <a class="" href="/vote/edit?id={{item['id']}}" data-pjax=""><i class="close icon-wrench m-t-lg m-r"></i></a>
+                                        <a class="" href="/vote/view?id={{item['id']}}" data-pjax=""><i class="close icon-settings m-t-lg m-r"></i></a>
+                                    </div>
+                                    <div class="media-body">
+                                        <a href="/vote/edit?id={{item['id']}}" class="h4 text-info block m-b-xs">{{item['title']}}</a>
+                                        {%if item['status'] == 1%}
+                                        <span class="label bg-success" title="">正常</span>
+                                        {% else %}
+                                        <span class="label bg-warning" title="">限制</span>
+                                        {% endif %}
+                                        <small class="block m-t-xs">{{item['intro']}}</small>
+                                        <em class="text-xs">{{item['start_time']}}</em>
+                                    </div>
+                                </article>
+                                <!--<div class="line line-dashed b-b line-lg pull-in"></div>-->
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <footer class="panel-footer">
+                            <div class="row">
+                                <div class="col-sm-12 text-right text-center-xs">
+                                    <ul class="pagination pagination-sm m-t-none m-b-none">
+                                        {{page}}
+                                    </ul>
+                                </div>
+                            </div>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <form id="collapseOne" action="/vote/index" method="post" role="form" data-pjax="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="myModalLabel">投票查询</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="txt_parentdepartment">关键字</label>
+                        <input type="text" name="title" class="form-control" value="{{query['title']}}" id="txt_parentdepartment" placeholder="">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txt_parentdepartment">开始时间</label>
+                        <input type="text" name="start_time" class="form-control form_datetime" value="{{query['start_time']}}" placeholder="">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txt_parentdepartment">结束时间</label>
+                        <input type="text"  name="end_time" class="form-control form_datetime" value="{{query['end_time']}}" placeholder="">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                    <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>查询</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $("#btn_add").click(function () {
+            $('#myModal').modal();
+        });
+
+        $(".btn-primary").click(function () {
+            $('#myModal').modal('hide');
+            setTimeout("$('#collapseOne').submit()",500);
+        });
+
+        $(".form_datetime").datetimepicker({
+            format: "yyyy-mm-dd hh:00:00",
+            autoclose: true,
+            todayBtn: true,
+            todayHighlight: true,
+            showMeridian: true,
+            pickerPosition: "bottom-left",
+            language: 'zh-CN',//中文，需要引用zh-CN.js包
+            startView: 2,//月视图
+            minView: 1//日期时间选择器所能够提供的最精确的时间选择视图
+        });
+    });
+</script>

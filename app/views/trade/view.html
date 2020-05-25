@@ -1,0 +1,87 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Trade Manage</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <ul class="nav nav-pills pull-right">
+                            <li><a href="javascript:history.back(-1)"><i class="fa fa-mail-reply-all"></i> 返回 </a></li>
+                        </ul>
+                        <i class="fa fa-cube"></i> 订单信息
+                    </div>
+                    <div class="panel-body">
+                        <div class="portlet-body">
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 订单ID : </div>
+                                <div class="col-md-7 value"> {{trade['transaction']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 账号ID : </div>
+                                <div class="col-md-7 value"> {{trade['user_id']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 支付状态 : </div>
+                                <div class="col-md-7 value">{{trade['status']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 币种 : </div>
+                                <div class="col-md-7 value"> {{trade['currency']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 金额 : </div>
+                                <div class="col-md-7 value"> {{trade['amount']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 美元 : </div>
+                                <div class="col-md-7 value"> {{trade['amount_usd']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 产品ID : </div>
+                                <div class="col-md-7 value"> {{trade['product_id']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 自定义 : </div>
+                                <div class="col-md-7 value"> {{trade['custom']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 支付网关 : </div>
+                                <div class="col-md-7 value"> {{trade['gateway']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 网关ID : </div>
+                                <div class="col-md-7 value"> {{trade['trade_no']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 操作系统 : </div>
+                                <div class="col-md-7 value"> {{trade['device']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 渠道 : </div>
+                                <div class="col-md-7 value"> {{trade['channel']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> IP : </div>
+                                <div class="col-md-7 value"> {{trade['ip']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> UUID : </div>
+                                <div class="col-md-7 value"> {{trade['channel']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 创建时间 : </div>
+                                <div class="col-md-7 value"> {{trade['create_time']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 完成时间 : </div>
+                                <div class="col-md-7 value"> {{trade['complete_time']}} </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

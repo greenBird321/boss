@@ -1,0 +1,58 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Server Manage</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <ul class="nav nav-pills pull-right">
+                <li><a href="/server/create" data-pjax=""><i class="fa fa-plus"></i> 创建服务器 </a></li>
+                </ul>
+                服务器概况
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped b-t b-light">
+                    <thead>
+                    <tr>
+                        <th>区服标识ID</th>
+                        <th>服务器名称</th>
+                        <th>服务器IP</th>
+                        <th>服务器端口</th>
+                        <th>服务器状态</th>
+                        <th>是否爆满</th>
+                        <th>是否可见</th>
+
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in lists %}
+                    <tr>
+                        <td>{{item['id']}}</td>
+                        <td>{{item['name']}}</td>
+                        <td>{{item['host']}}</td>
+                        <td>{{item['port']}}</td>
+                        <td>
+                            {%if item['open_mode'] == 'on'%}
+                            <span class="label bg-success" title="">{{item['open_mode']}}</span>
+                            {% elseif  item['open_mode'] == 'off'%}
+                            <span class="label bg-warning" title="">{{item['open_mode']}}</span>
+                            {% else %}
+                            <span class="label bg-info" title="">{{item['open_mode']}}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{item['full_mode']}}</td>
+                        <td>{{item['visible_mode']}}</td>
+                        <td>
+                            <a class="btn btn-sm btn-info" data-pjax="" href="/server/edit?id={{item['id']}}">Edit</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <footer class="panel-footer">
+            </footer>
+        </div>
+    </div>
+</div>

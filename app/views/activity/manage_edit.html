@@ -1,0 +1,157 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Activity Manage</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <ul class="nav nav-pills pull-right">
+                            <li><a href="javascript:history.back(-1)"><i class="fa fa-mail-reply-all"></i> 返回 </a></li>
+                        </ul>
+                        <i class="fa fa-cube"></i> 活动信息
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal" data-pjax="" method="post" action="/activity/manage?do=edit" role="form">
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">标题</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="title" class="form-control" id="title" placeholder="" value="{{activity['title']}}" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastname" class="col-sm-2 control-label">活动类型</label>
+                                <div class="col-sm-4">
+                                    <select name="type" class="form-control" required>
+                                        <option value="">请选择</option>
+                                        <option value="prepay" {%if activity['type']=='prepay'%}selected{%endif%}>充值</option>
+                                        <option value="spend" {%if activity['type']=='spend'%}selected{%endif%}>消费</option>
+                                        <option value="login" {%if activity['type']=='login'%}selected{%endif%}>登录</option>
+                                        <option value="level" {%if activity['type']=='level'%}selected{%endif%}>等级</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastname" class="col-sm-2 control-label">起止时间</label>
+                                <div class="col-sm-4" ng-controller="DatepickerDemoCtrl">
+                                    <div class="input-group w-full">
+                                        <input class="form_datetime form-control" type="text" name="start_time" size="16" value="{{activity['start_time']}}" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4" ng-controller="DatepickerDemoCtrl">
+                                    <div class="input-group w-full">
+                                        <input class="form_datetime form-control" type="text" name="end_time" size="16" value="{{activity['end_time']}}" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">区服</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="zone" class="form-control" placeholder="区服" value="{{activity['zone']}}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">渠道</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="channel" class="form-control" placeholder="渠道" value="{{activity['channel']}}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">跳转URL</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="url" class="form-control" placeholder="" value="{{activity['url']}}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">图片</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="img" class="form-control" placeholder="" value="{{activity['img']}}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">小图</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="img_small" class="form-control" placeholder="" value="{{activity['img_small']}}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">自定义内容</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="custom" class="form-control" placeholder="自定义内容" value="{{activity['custom']}}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">排序</label>
+                                <div class="col-sm-8">
+                                    <input ui-jq="TouchSpin" name="sort" type="text"  value="{{activity['sort']}}" class="form-control" data-min='0' data-max="1000" data-verticalbuttons="true" data-verticalupclass="fa fa-caret-up"  data-verticaldownclass="fa fa-caret-down">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastname" class="col-sm-2 control-label">状态</label>
+                                <div class="col-sm-8">
+                                    <label class="i-switch bg-info m-t-xs m-r">
+                                        <input type="checkbox" name="status" value="1" {%if activity['status'] ==1%}checked{%endif%}>
+                                        <i></i>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastname" class="col-sm-2 control-label">是否可见</label>
+                                <div class="col-sm-8">
+                                    <label class="i-switch bg-info m-t-xs m-r">
+                                        <input type="checkbox" name="visible" value="1" {%if activity['visible'] ==1%}checked{%endif%}>
+                                        <i></i>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastname" class="col-sm-2 control-label">内容</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" rows="10" name="formcontent" id="formcontent">{{activity['content']}}</textarea>
+                                </div>
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <input type="hidden" name="id" value="{{activity['id']}}">
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <button type="submit" class="btn btn-info">确认修改</button>
+                                    <a class="btn btn-default" onclick="javascript:history.back(-1)">取消修改</a>
+                                    <a href="/activity/manage?do=remove&id={{activity['id']}}" class="btn btn-danger pull-right" onclick="return confirm('确认删除?')">
+                                        <i class="fa fa-trash-o text"></i><span class="text">删除</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+//        $("#summernote").summernote({
+//            height: 300,                 // set editor height
+//        });
+//
+//        $('#summernote').on('summernote.change', function(we, contents, $editable) {
+//            var markupStr = $('#summernote').summernote('code');
+//            $('#formcontent').val(markupStr);
+//        });
+
+        $(".form_datetime").datetimepicker({
+            format: "yyyy-mm-dd hh:00:00",
+            autoclose: true,
+            todayBtn: true,
+            todayHighlight: true,
+            showMeridian: true,
+            pickerPosition: "bottom-left",
+            language: 'zh-CN',//中文，需要引用zh-CN.js包
+            startView: 2,//月视图
+            minView: 1//日期时间选择器所能够提供的最精确的时间选择视图
+        });
+    });
+</script>

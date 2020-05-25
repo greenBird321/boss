@@ -1,0 +1,50 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Notice Manage</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <ul class="nav nav-pills pull-right">
+                            <li><a href="javascript:history.back(-1)"><i class="fa fa-mail-reply-all"></i> 返回 </a></li>
+                        </ul>
+                        <i class="fa fa-cube"></i> 导入公告
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal " role="form">
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">导入文件</label>
+                                <div class="col-sm-8">
+                                    <input type="file" class="filestyle">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">是否覆盖</label>
+                                <div class="col-sm-8">
+                                    <label class="i-switch bg-info m-t-xs m-r">
+                                        <input type="checkbox" name="status" value="1" >
+                                        <i></i>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-8">
+                                    <button type="submit"  class="btn btn-info">提交</button>
+                                    <a class="btn btn-default" onclick="javascript:history.back(-1)">取消修改</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="../assets/libs/jquery/bootstrap-filestyle/src/bootstrap-filestyle.js"> </script>
+<script type="text/javascript">
+    $(":file").filestyle('buttonText', ' 导入 ');
+</script>

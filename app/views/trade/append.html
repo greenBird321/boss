@@ -1,0 +1,82 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">订单管理</h1>
+    </div>
+    <div class="wrapper-md" ng-controller="FormDemoCtrl">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <ul class="nav nav-pills pull-right">
+                            <li><a href="javascript:history.back(-1)"><i class="fa fa-mail-reply-all"></i> 返回 </a></li>
+                        </ul>
+                        <i class="fa fa-cube"></i> 补发订单
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal " role="form">
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label"></label>
+                                <div class="col-sm-8">
+                                    <p class="text-muted row">本功能用于给玩家发放金币，全程日志记录，勿乱用</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastname" class="col-sm-2 control-label">游戏服务器</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">玩家角色ID</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="firstname"
+                                           placeholder="玩家角色ID">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">游戏币</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="firstname"
+                                           placeholder="0">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="firstname" class="col-sm-2 control-label">游戏币（计入VIP积分）</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="firstname"
+                                           placeholder="0">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastname" class="col-sm-2 control-label">正文</label>
+                                <div class="col-sm-8">
+                                    <div id="summernote"></div>
+                                </div>
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <button type="submit" class="btn btn-info">确认修改</button>
+                                    <a class="btn btn-default" onclick="javascript:history.back(-1)">取消修改</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).on('pjax:success', function() {
+        $("#summernote").summernote({
+            height: 300,                 // set editor height
+        });
+    });
+</script>

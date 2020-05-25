@@ -1,0 +1,102 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Activity Manage</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                    筛选条件，再次点击隐藏。
+                </a>
+                <form id="collapseOne" action="/activity/logs" class="form-inline panel-collapse collapse {%if isquery==1%}in{%endif%}" data-pjax="" role="form">
+                    <div class="form-group padder-v m-l m-r">
+                        <label>活动ID</label>
+                        <input type="text" class="m-l-sm m-r-sm form-control" name="item_id" value="{{query['item_id']}}">
+                    </div>
+                    <div class="form-group">
+                        <label>账号ID</label>
+                        <input type="text" class="m-l-sm m-r-sm form-control" name="user_id" value="{{query['user_id']}}">
+                    </div>
+                    <div class="form-group">
+                        <label>活动配置ID</label>
+                        <input type="text" class="m-l-sm m-r-sm form-control" name="cfg_id" value="{{query['cfg_id']}}">
+                    </div>
+                    <div class="form-group">
+                        <label>礼物关键字</label>
+                        <input type="text" class="m-l-sm m-r-sm form-control" name="prop" value="{{query['prop']}}">
+                    </div>
+                    <div class="form-group">
+                        <label>开始时间</label>
+                        <input type="text" class="m-l-sm m-r-sm form-control form_datetime" name="start_time" value="{{query['start_time']}}">
+                    </div>
+                    <div class="form-group">
+                        <label>结束时间</label>
+                        <input type="text" class="m-l-sm m-r-sm form-control form_datetime" name="end_time" value="{{query['end_time']}}">
+                    </div>
+                    <span ng-controller="ModalDemoCtrl">
+                        <button class="btn btn-success">查询</button>
+                    </span>
+                </form>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="panel-heading">
+                <!--<ul class="nav nav-pills pull-right">-->
+                <!--<li><a href="/blacklist/create"><i class="fa fa-plus"></i> 创建账号 </a></li>-->
+                <!--</ul>-->
+                活动日志
+            </div>
+            <div class="table-responsive">
+
+                <table class="table table-striped b-t b-light">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>活动ID</th>
+                        <th>活动配置ID</th>
+                        <th>用户ID</th>
+                        <th>礼包</th>
+                        <th>日志时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in lists %}
+                    <tr>
+                        <td>{{item['id']}}</td>
+                        <td>{{item['item_id']}}</td>
+                        <td>{{item['cfg_id']}}</td>
+                        <td>{{item['user_id']}}</td>
+                        <td>{{item['prop']}}</td>
+                        <td>{{item['create_time']}}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <footer class="panel-footer">
+                <div class="row">
+                    <div class="col-sm-12 text-right text-center-xs">
+                        <ul class="pagination pagination-sm m-t-none m-b-none">
+                            {{page}}
+                        </ul>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $(".form_datetime").datetimepicker({
+            format: "yyyy-mm-dd",
+            autoclose: true,
+            todayBtn: true,
+            todayHighlight: true,
+            showMeridian: true,
+            pickerPosition: "bottom-left",
+            language: 'zh-CN',//中文，需要引用zh-CN.js包
+            startView: 2,//月视图
+            minView: 2//日期时间选择器所能够提供的最精确的时间选择视图
+        });
+    });
+</script>

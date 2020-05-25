@@ -1,0 +1,228 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Reissue Manage</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="table-responsive">
+                <div ng-controller="TabsDemoCtrl">
+
+                    <ul class="nav nav-pills pull-right">
+                        <li><a href="/game/logs" data-pjax=""><i class="fa fa-eye"></i> 操作日志 </a></li>
+                    </ul>
+                    <ul id="myTab" class="nav nav-tabs">
+                        <li><a href="#fadeother" data-toggle="tab">道具操作</a></li>
+                    </ul>
+                    <div id="myTabContent" class="tab-content">
+                        <!--其他属性-->
+                        <div class="tab-pane fade in active" id="fadeother">
+                            <div class="panel-body">
+                                <form class="form-horizontal " method="post" action="/game/attach" role="form">
+                                    <input type="hidden" id="act">
+                                    <div class="form-group">
+                                        <label for="lastname" class="col-sm-2 control-label">补发操作</label>
+                                        <div class="col-sm-8">
+                                            <select name="type" class="form-control" id="prop">
+                                                {% for name, value in lists %}
+                                                <option value="{{name}}">{{value}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="firstname" class="col-sm-2 control-label">服务器</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" name="server" id="server">
+                                                {% for item in server %}
+                                                <option value="{{item['id']}}">{{item['name']}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="hide other" id="coin">
+                                        <div class="form-group">
+                                            <label for="user_id" class="col-sm-2 control-label">玩家ID</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="coin_user_id" placeholder="玩家ID" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">数量</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="coin_amount" placeholder="增加数量(负数则减少)" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">正文</label>
+                                            <div class="col-sm-8">
+                                                <textarea class="form-control" rows="3" id="coin_msg"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hide other" id="attach">
+                                        <div class="form-group">
+                                            <label for="firstname" class="col-sm-2 control-label">玩家ID</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="attach_user_id" name="user_id" placeholder="玩家ID" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="firstname" class="col-sm-2 control-label">礼包ID</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="attach_amount" name="attach"
+                                                       placeholder="(道具1数量,道具2数量) 例: 12345610,6543215" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="lastname" class="col-sm-2 control-label">正文</label>
+                                            <div class="col-sm-8">
+                                                <textarea class="form-control" rows="3" id="attach_msg"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hide other" id="mail">
+                                        <div class="form-group">
+                                            <label for="user_id" class="col-sm-2 control-label">玩家ID</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="mail_user_id" placeholder="玩家ID" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="user_id" class="col-sm-2 control-label">标题</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="mail_title" placeholder="标题" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="msg" class="col-sm-2 control-label">正文</label>
+                                            <div class="col-sm-8">
+                                                <div id="summernote"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <textarea class="hidden" name="formcontent" id="mail_msg"></textarea>
+                                    <div class="line line-dashed b-b line-lg pull-in"></div>
+                                    <div class="form-group">
+                                        <div class="col-sm-8 col-sm-offset-2">
+                                            <button type="button" class="btn btn-info btn-other">确认补发</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel">提示</h4>
+            </div>
+            <div class="modal-body font-thin h1">
+                <span>补发成功</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#summernote').on('summernote.change', function(we, contents, $editable) {
+            var markupStr = $('#summernote').summernote('code');
+            $('#mail_msg').val(markupStr);
+        });
+
+        $("#summernote").summernote({
+            height: 300,                 // set editor height
+        });
+
+        var show = $('#prop').val();
+        $('#act').val(show);
+        if (show == 'attach'){
+            $('#attach').attr('class','show other');
+        }else if(show == 'mail'){
+            $('#mail').attr('class','show other');
+        }else{
+            $('#coin').attr('class','show other');
+        }
+
+        $('#prop').change(function(){
+            var action = this.value;
+            $('.other').attr('class','hide other');
+            $('#act').val(action);
+            if (action == 'attach'){
+                $('#attach').attr('class','show other');
+            }else if(action == 'mail'){
+                $('#mail').attr('class','show other');
+            }else{
+                $('#coin').attr('class','show other');
+            }
+
+        });
+
+        $('.btn-other').on('click',function(){
+            var action = $('#prop').val();
+            var server = $('#server').val();
+
+            if(action != 'attach' && action != 'mail'){
+                var user_id = $('#coin_user_id').val();
+                var amount = $('#coin_amount').val();
+            }else{
+                var user_id = $('#'+action+'_user_id').val();
+                var amount = $('#'+action+'_amount').val();
+            }
+            var title = $('#'+action+'_title').val();
+            var msg = $('#'+action+'_msg').val();
+
+            if(user_id == ""){
+                alert('用户ID不能为空');
+                return;
+            }
+
+            if((action == 'coin' || action == 'exp') && amount == ""){
+                alert('增加数量不能为空');
+                return;
+            }
+
+            if(action == 'attach' && amount == ""){
+                alert('礼包ID不能为空');
+                return;
+            }
+
+            if(action == 'mail' && msg == ""){
+                alert('正文不能为空');
+                return;
+            }
+
+            $.ajax({
+                url:'/game/attach',
+                type:'POST', //GET
+                async:true,    //或false,是否异步
+                data:{
+                    server:server,
+                    action:action,
+                    user_id:user_id,
+                    amount:amount,
+                    title:title,
+                    msg:msg,
+                },
+                dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+                success:function(respon){
+                    $('.modal-body').html('<span>'+ respon['data'] +'</span>');
+                    $('#myModal').modal();
+                }
+            });
+        });
+    });
+</script>

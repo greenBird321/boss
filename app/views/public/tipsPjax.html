@@ -1,0 +1,45 @@
+<div class="panel">
+    <div class="wrapper-lg">
+        <h2 class="m-t-none"></h2>
+        <div class="text-center">
+            <h3>
+                {%if tips['type']=='error'%}
+                <i class="fa fa-times icon  text-danger" style="font-size: 40px;"></i>
+                {% else %}
+                <i class="fa fa-check icon text-success" style="font-size: 40px;"></i>
+                {% endif %}
+
+                {% if tips['message'] %}
+                {{tips['message']}}
+                {% else %}Operation Is completed
+                {% endif %}
+            </h3>
+            <div>
+                Redirect after <b id="wait">{%if tips['seconds'] %}{{tips['seconds']}} {% else %} 3 {% endif %}</b> seconds,
+                click <a data-pjax href='{{tips['redirect']}}' id="href"><b>Here</b></a> if not.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    (function () {
+        var wait = document.getElementById('wait'), href = document.getElementById('href').href;
+        var pop = document.getElementById('href');
+        var flag = 0;
+        pop.onclick = function (e) {
+            flag = 1;
+        }
+        var interval = setInterval(function () {
+            var time = --wait.innerHTML;
+            if (time <= 0 && flag == 0) {
+                $.pjax({
+                    url: href,
+                    container: '#content'
+                });
+                clearInterval(interval);
+            }
+            ;
+        }, 1000);
+    })();
+</script>

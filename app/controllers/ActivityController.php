@@ -120,6 +120,36 @@ class ActivityController extends ControllerBase
      */
     public function importAction()
     {
+        if ($_POST) {
+            $files    = $_FILES;
+            $error    = $files['activitydata']['error'];
+            $filename = $files['activitydata']['name'];
+            $ext      = explode( '.', $filename)[1];
+            $filepath = __DIR__ . '/../../public/files/' . date("Y-m-d H:i:s")."-$filename";
+            if ($error > 0) {
+                Utils::tips('error', '上传文件失败', '/activity/import');
+            }
+
+            $allow_extension = [
+                'bytes'
+            ];
+
+            if (!in_array($ext, $allow_extension)) {
+                Utils::tips('error', '文件格式错误', '/activity/import');
+            }
+
+            // 将文件转移到正式文件夹
+            if (!move_uploaded_file($files['activitydata']['tmp_name'], $filepath)) {
+                Utils::tips('error', '上传文件失败,请重试', '/activity/import');
+            }
+
+            // 读取文件内容
+            $content = file_get_contents($filepath);
+            // 调取接口(后端)
+            dump($content);exit;
+        }
+
+        $this->view->pick("activity/import");
     }
 
 

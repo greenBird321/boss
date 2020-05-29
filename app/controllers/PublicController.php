@@ -68,6 +68,7 @@ class PublicController extends Controller
         $this->session->set('username', $result['username']);
         $this->session->set('name', $result['name']);
         $this->session->set('avatar', $result['avatar']);
+        $this->session->set('role_id', $result['role_id']);
 
         $this->sendSessionLogAction();
         header('Location:/');

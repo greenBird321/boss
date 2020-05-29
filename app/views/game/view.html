@@ -1,0 +1,83 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Player Operation Manage</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <ul class="nav nav-pills pull-right">
+                            <li><a href="javascript:history.back(-1)"><i class="fa fa-mail-reply-all"></i> 返回 </a></li>
+                        </ul>
+                        <i class="fa fa-cube"></i> 补发信息
+                    </div>
+                    <div class="panel-body">
+                        <div class="portlet-body">
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 补发标题 : </div>
+                                <div class="col-md-7 value"> {{log['title']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 补发内容 : </div>
+                                <div class="col-md-7 value"> {{log['content']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 发送类型 : </div>
+                                <div class="col-md-7 value"> {{log['type']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 发送状态 : </div>
+                                <div class="col-md-7 value">
+                                    {% if log['status'] == 0 %}
+                                        <span class="label bg-info" title="">待审核</span>
+                                    {% elseif log['status'] == 1 %}
+                                        <span class="label bg-success" title="">正常</span>
+                                    {% elseif log['status'] == 2 %}
+                                        <span class="label bg-warning" title="">失败</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 操作人 : </div>
+                                <div class="col-md-7 value"> {{log['operation_id']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 审核人 : </div>
+                                <div class="col-md-7 value"> {{log['agree_id']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 发送用户 : </div>
+                                <div class="col-md-7 value"> {{log['send_user']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 发送道具及数量 : </div>
+                                <div class="col-md-7 value"> {{log['send_prop']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 创建时间 : </div>
+                                <div class="col-md-7 value"> {{log['create_time']}} </div>
+                            </div>
+                            <div class="row media-heading container">
+                                <div class="col-md-3 name"> 审核通过时间 : </div>
+                                <div class="col-md-7 value"> {{log['update_time']}} </div>
+                            </div>
+                        </div>
+                        <div class="line line-dashed b-b line-lg pull-in"></div>
+                        {% if isAdmin AND log['status'] != 1%}
+                        <form class="form-horizontal" action="/game/view" data-pjax="" method="POST" role="form">
+                            <input type="hidden" name="status" value="1">
+                            <input type="hidden" name="id" value={{id}}>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-8">
+                                    <button type="submit" id="btn_submit"  class="btn btn-info">确认补发</button>
+                                </div>
+                            </div>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

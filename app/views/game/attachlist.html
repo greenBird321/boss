@@ -1,0 +1,79 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Player Operation</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <ul class="nav nav-pills pull-right">
+                    <li><a href="/game/attach" data-pjax=""><i class="fa fa-plus"></i> 添加 </a></li>
+                </ul>
+                玩家操作列表
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="padder-v padder">
+                        <div class="m-b-md">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped b-t b-light">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>补发状态</th>
+                                            <th>发送类型</th>
+                                            <th>发送物品</th>
+                                            <th>发起人</th>
+                                            <th>审核人</th>
+                                            <th>创建时间</th>
+                                            <th>更多</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for log in logs %}
+                                        <tr>
+                                            <td>{{log['id']}}</td>
+                                            {% if log['status'] == 0 %}
+                                            <td>
+                                                <span class="label bg-info" title="">待审核</span>
+                                            </td>
+                                            {% elseif log['status'] == 1 %}
+                                            <td>
+                                                <span class="label bg-success" title="">正常</span>
+                                            </td>
+                                            {% elseif log['status'] == 2 %}
+                                            <td>
+                                                <span class="label bg-warning" title="">失败</span>
+                                            </td>
+                                            {% endif %}
+                                            <td>{{log['type']}}</td>
+                                            <td>{{log['send_prop']}}</td>
+                                            <td>{{log['operation_id']}}</td>
+                                            <td>{{log['agree_id']}}</td>
+                                            <td>{{log['create_time']}}</td>
+                                            <td>
+                                                <a class="btn btn-sm btn-info" data-pjax=""
+                                                   href="/game/view?id={{log['id']}}">查看</a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <footer class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-sm-12 text-right text-center-xs">
+                                            <ul class="pagination pagination-sm m-t-none m-b-none">
+                                                {{page}}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </footer>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

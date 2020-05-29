@@ -30,6 +30,109 @@ class Game extends Model
         return $result;
     }
 
+    /**
+     * 保存补发log
+     */
+    public function setAttachLog($data)
+    {
+        $type         = $data['type'];
+        $status       = isset($data['status']) ? $data['status'] : 0;
+        $title        = $data['title'];
+        $content      = $data['msg'];
+        $operation_id = $data['operation_id'];
+        // 发送道具的id 以及 发送的数量
+        $send_prop    = $data['send_prop'];
+        // 发送用户的 服务器id 以及 用户id
+        $send_user    = $data['send_user'];
+        $create_time  = date('Y-m-d H:i:s', time());
+        $app_id       = $data['app_id'];
+
+        $sql          = "INSERT INTO logs_attach (`app_id`, `status`, `title`, `content`, `type`, `operation_id`, `send_prop`, `send_user`, `create_time`) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        DI::getDefault()->get('dbData')->execute($sql, [
+            $app_id,
+            $status,
+            $title,
+            $content,
+            $type,
+            $operation_id,
+            $send_prop,
+            $send_user,
+            $create_time
+        ]);
+    }
+
+    /**
+     * 获得logs_attach数据
+     */
+    public function getAttachLogList($currentPage, $pageSize)
+    {
+        $sql = "SELECT * FROM `logs_attach` WHERE 1=1";
+        if (!empty(DI::getDefault()->get('session')->get('app'))) {
+            $app_id = DI::getDefault()->get('session')->get('app');
+            $sql .= " AND app_id={$app_id}";
+        }
+        $sql .= " ORDER BY id DESC";
+        $sql .= " LIMIT " . ($currentPage - 1) * $pageSize . ",$pageSize";
+        $query = DI::getDefault()->get('dbData')->query($sql);
+        $query->setFetchMode(Db::FETCH_ASSOC);
+        $data = $query->fetchAll();
+
+        return $data;
+    }
+
+    /**
+     * 获取attachLog的记录总数
+     */
+    public function getAttachLogCount()
+    {
+        $sql = "SELECT COUNT(1) as count FROM `logs_attach` WHERE 1=1";
+        if (!empty(DI::getDefault()->get('session')->get('app'))) {
+            $app_id = DI::getDefault()->get('session')->get('app');
+            $sql .= " AND app_id={$app_id}";
+        }
+        $query = DI::getDefault()->get('dbData')->query($sql);
+        $query->setFetchMode(Db::FETCH_ASSOC);
+        $result = $query->fetch();
+
+        return $result['count'];
+    }
+
+    /**
+     * 通过id查找单条log
+     * @param $id
+     */
+    public function getAttachLog($id)
+    {
+        $bind = [
+            'id' => $id
+        ];
+        $sql = "SELECT `status`, `title`, `content`, `type`, `operation_id`, `agree_id`, `send_prop`, `send_user`, `create_time`, `update_time` FROM `logs_attach` WHERE id=:id";
+        $query = DI::getDefault()->get('dbData')->query($sql, $bind);
+        $query->setFetchMode(Db::FETCH_ASSOC);
+        $data = $query->fetch();
+
+        return $data;
+    }
+
+    /**
+     * 更新log日志
+     */
+    public function updateAttachLog($id, $user_id, $status)
+    {
+        $update_time = date('Y-m-d H:i:s', time());
+        $bind = [
+            'status' => $status,
+            'user_id' => $user_id,
+            'id' => $id,
+            'update_time' => $update_time
+        ];
+        $sql = "UPDATE `logs_attach` SET `status`=:status, `agree_id`=:user_id, `update_time`=:update_time WHERE id=:id";
+        $result = DI::getDefault()->get('dbData')->execute($sql, $bind);
+
+        return $result;
+    }
+
     /*
      * 补发操作
      */

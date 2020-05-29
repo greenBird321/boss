@@ -8,7 +8,7 @@
                 <div ng-controller="TabsDemoCtrl">
 
                     <ul class="nav nav-pills pull-right">
-                        <li><a href="/game/logs" data-pjax=""><i class="fa fa-eye"></i> 操作日志 </a></li>
+                        <!--<li><a href="location.href=document.referre"><i class="fa fa-mail-reply-all"></i> 返回 </a></li>-->
                     </ul>
                     <ul id="myTab" class="nav nav-tabs">
                         <li><a href="#fadeother" data-toggle="tab">道具操作</a></li>
@@ -20,7 +20,7 @@
                                 <form class="form-horizontal " method="post" action="/game/attach" role="form">
                                     <input type="hidden" id="act">
                                     <div class="form-group">
-                                        <label for="lastname" class="col-sm-2 control-label">补发操作</label>
+                                        <label class="col-sm-2 control-label">补发操作</label>
                                         <div class="col-sm-8">
                                             <select name="type" class="form-control" id="prop">
                                                 {% for name, value in lists %}
@@ -29,8 +29,9 @@
                                             </select>
                                         </div>
                                     </div>
+
                                     <div class="form-group">
-                                        <label for="firstname" class="col-sm-2 control-label">服务器</label>
+                                        <label class="col-sm-2 control-label">服务器</label>
                                         <div class="col-sm-8">
                                             <select class="form-control" name="server" id="server">
                                                 {% for item in server %}
@@ -39,70 +40,119 @@
                                             </select>
                                         </div>
                                     </div>
+
                                     <div class="hide other" id="coin">
                                         <div class="form-group">
-                                            <label for="user_id" class="col-sm-2 control-label">玩家ID</label>
+                                            <label class="col-sm-2 control-label">玩家ID</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" id="coin_user_id" placeholder="玩家ID" required>
+                                                <input type="text" class="form-control" id="coin_user_id" name="user_id" placeholder="玩家ID" required>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">数量</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" id="coin_amount" placeholder="增加数量(负数则减少)" required>
+                                                <input type="text" class="form-control" id="coin_amount" name="amount" placeholder="增加数量(负数则减少)" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">标题</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="coin_title" name="title" required>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">正文</label>
                                             <div class="col-sm-8">
-                                                <textarea class="form-control" rows="3" id="coin_msg"></textarea>
+                                                <textarea class="form-control" rows="3" id="coin_msg" name="msg"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hide other" id="exp">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">玩家ID</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="exp_user_id" name="user_id" placeholder="玩家ID" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">数量</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="exp_amount" name="amount" placeholder="增加数量(负数则减少)" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">标题</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="exp_title" name="title" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">正文</label>
+                                            <div class="col-sm-8">
+                                                <textarea class="form-control" rows="3" id="exp_msg" name="msg"></textarea>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="hide other" id="attach">
                                         <div class="form-group">
-                                            <label for="firstname" class="col-sm-2 control-label">玩家ID</label>
+                                            <label class="col-sm-2 control-label">玩家ID</label>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control" id="attach_user_id" name="user_id" placeholder="玩家ID" required>
                                             </div>
                                         </div>
+
                                         <div class="form-group">
-                                            <label for="firstname" class="col-sm-2 control-label">礼包ID</label>
+                                            <label class="col-sm-2 control-label">礼包ID</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" id="attach_amount" name="attach"
-                                                       placeholder="(道具1数量,道具2数量) 例: 12345610,6543215" >
+                                                <input type="text" class="form-control" id="attach_amount" name="amount"
+                                                       placeholder="发送道具*发送数量,发送道具*发送数量" >
                                             </div>
                                         </div>
+
                                         <div class="form-group">
-                                            <label for="lastname" class="col-sm-2 control-label">正文</label>
+                                            <label class="col-sm-2 control-label">标题</label>
                                             <div class="col-sm-8">
-                                                <textarea class="form-control" rows="3" id="attach_msg"></textarea>
+                                                <input type="text" class="form-control" id="attach_title" name="title" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">正文</label>
+                                            <div class="col-sm-8">
+                                                <textarea class="form-control" rows="3" id="attach_msg" name="msg"></textarea>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="hide other" id="mail">
                                         <div class="form-group">
-                                            <label for="user_id" class="col-sm-2 control-label">玩家ID</label>
+                                            <label class="col-sm-2 control-label">玩家ID</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" id="mail_user_id" placeholder="玩家ID" required>
+                                                <input type="text" class="form-control" id="mail_user_id" name="user_id" placeholder="玩家ID" required>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="user_id" class="col-sm-2 control-label">标题</label>
+                                            <label class="col-sm-2 control-label">数量</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" id="mail_title" placeholder="标题" required>
+                                                <input type="text" class="form-control" id="mail_amount" name="amount" placeholder="发送道具*发送数量,发送道具*发送数量" required>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="msg" class="col-sm-2 control-label">正文</label>
+                                            <label class="col-sm-2 control-label">标题</label>
                                             <div class="col-sm-8">
-                                                <div id="summernote"></div>
+                                                <input type="text" class="form-control" id="mail_title" name="title" placeholder="标题" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">正文</label>
+                                            <div class="col-sm-8">
+                                                <textarea class="form-control" rows="3" id="mail_msg" name="msg"></textarea>
                                             </div>
                                         </div>
                                     </div>
-                                    <textarea class="hidden" name="formcontent" id="mail_msg"></textarea>
+
                                     <div class="line line-dashed b-b line-lg pull-in"></div>
                                     <div class="form-group">
                                         <div class="col-sm-8 col-sm-offset-2">
@@ -153,8 +203,10 @@
             $('#attach').attr('class','show other');
         }else if(show == 'mail'){
             $('#mail').attr('class','show other');
-        }else{
+        }else if (show == 'coin'){
             $('#coin').attr('class','show other');
+        } else {
+            $('#exp').attr('class', 'show other');
         }
 
         $('#prop').change(function(){
@@ -165,8 +217,10 @@
                 $('#attach').attr('class','show other');
             }else if(action == 'mail'){
                 $('#mail').attr('class','show other');
-            }else{
+            }else if (action == 'coin'){
                 $('#coin').attr('class','show other');
+            } else {
+                $('#exp').attr('class', 'show other');
             }
 
         });
@@ -175,7 +229,7 @@
             var action = $('#prop').val();
             var server = $('#server').val();
 
-            if(action != 'attach' && action != 'mail'){
+            if(action != 'attach' && action != 'mail' && action != 'exp'){
                 var user_id = $('#coin_user_id').val();
                 var amount = $('#coin_amount').val();
             }else{

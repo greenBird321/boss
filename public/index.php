@@ -14,10 +14,5 @@ include APP_DIR . "/bootstrap/loader.php";
 include APP_DIR . "/bootstrap/services.php";
 
 $application = new Application($di);
-try {
-    $request = new Phalcon\Http\Request();
-    $reponse = $application->handle($request->getURI());
-    $reponse->send();
-} catch (Exception $e) {
-    echo "Exception: ".$e->getMessage();
-}
+
+echo $application->handle()->getContent();

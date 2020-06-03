@@ -1,0 +1,33 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Card Query</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="table-responsive">
+                <table class="table table-striped b-t b-light">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>角色id</th>
+                        <th>激活码</th>
+                        <th>领取时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in cards %}
+                    <tr>
+                        <td>{{item['id']}}</td>
+                        <td>{{item['user_id']}}</td>
+                        <td>{{item['code']}}</td>
+                        <td>{{item['create_time']}}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <footer class="panel-footer">
+            </footer>
+        </div>
+    </div>
+</div>

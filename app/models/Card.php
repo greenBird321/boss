@@ -73,4 +73,26 @@ class Card extends Model
             return false;
         }
     }
+
+    public function searchCard($data)
+    {
+        $result = $this->utilsModel->yarRequest('Card', 'search', $data);
+        if ($result['code'] != 0) {
+            return false;
+        }
+        return $result;
+    }
+
+    public function downloadCard($card_id, $class, $fun)
+    {
+        global $config;
+        $service = DI::getDefault()->get('session')->get('group');
+        $lang = DI::getDefault()->get('session')->get('lang');
+        $app_id = DI::getDefault()->get('session')->get('app');
+        $host = str_replace('*', $app_id, $config->api->rpc_host);
+
+        $url = $host . "/$service/$lang/$class/$fun/";
+        header('Location:' . $url . '?id=' . $card_id);
+        exit;
+    }
 }

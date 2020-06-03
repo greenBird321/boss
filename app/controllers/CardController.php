@@ -9,6 +9,7 @@ namespace MyApp\Controllers;
 
 use MyApp\Models\Card;
 use MyApp\Models\Page;
+use MyApp\Models\Server;
 use Phalcon\Mvc\Dispatcher;
 use MyApp\Models\Utils;
 
@@ -17,6 +18,7 @@ class CardController extends ControllerBase
     private $cardModel;
     private $pageModel;
     private $utilsModel;
+    private $serverModel;
 
     public function initialize()
     {
@@ -24,6 +26,7 @@ class CardController extends ControllerBase
         $this->cardModel = new Card();
         $this->pageModel = new Page();
         $this->utilsModel = new Utils();
+        $this->serverModel = new Server();
     }
 
     /**
@@ -72,6 +75,7 @@ class CardController extends ControllerBase
         }
 
         $this->view->lists = $result['data'];
+        //$this->view->servers = $servers;
         $this->view->query = $data;
     }
 
@@ -110,6 +114,9 @@ class CardController extends ControllerBase
             case 'remove':
                 $this->remove();
                 break;
+            case 'download':
+                $this->download();
+                break;
         }
     }
 
@@ -125,6 +132,18 @@ class CardController extends ControllerBase
     {
     }
 
+    // 卡片 - 下载
+    private function download()
+    {
+        $card_id = $this->request->get('id');
+        if (!$card_id) {
+            Utils::tips('error', '数据不完整', '/card/index');
+        }
+
+        if (!$this->cardModel->downloadCard($card_id, 'Card', 'download')) {
+            Utils::tips('error', '下载失败', '/card/index');
+        }
+    }
 
     // 卡片 - 创建
     private function create()
@@ -212,6 +231,29 @@ class CardController extends ControllerBase
         else {
             Utils::tips('error', '删除失败', '/card/index');
         }
+    }
+
+    /**
+     * 激活码查询
+     */
+    public function searchAction()
+    {
+        $data['role_id']  = $this->request->get('role_id', ['string', 'trim']);
+        $data['topic_id'] = $this->request->get('card_id', ['string', 'trim']);
+
+        if (!$data['role_id'] && !$data['topic_id']) {
+            Utils::tips('error', '数据不完整', '/card/index');
+        }
+
+        $result = $this->cardModel->searchCard($data);
+
+        if (!$result) {
+            Utils::tips('error', '查询失败');
+            exit;
+        }
+
+        $this->view->cards = $result['data'];
+        $this->view->pick('card/search');
     }
 
 }

@@ -29,7 +29,7 @@ class Server extends Model
 
     public function getLists()
     {
-        if (empty($_COOKIE['serverLists'])) {
+        if (!isset($_COOKIE['serverLists'])) {
             $this->getServerLists();
         }
         return json_decode($_COOKIE['serverLists'], true);

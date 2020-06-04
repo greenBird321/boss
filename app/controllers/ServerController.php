@@ -15,6 +15,25 @@ class ServerController extends ControllerBase
 {
     private $serverModel;
 
+    private $server_translate = [
+            0  => '普通',
+            1  => '爆满',
+            2  => '繁荣',
+            3  => '流畅',
+            4  => '维护',
+    ];
+
+    private $flag = [
+        0 => '推荐',
+        1 => '默认',
+        3 => '强烈推荐',
+    ];
+
+    private $new_server = [
+        0 => '否',
+        1 => '是',
+    ];
+
     public function initialize()
     {
         parent::initialize();
@@ -25,6 +44,9 @@ class ServerController extends ControllerBase
     public function indexAction()
     {
         $result = $this->serverModel->getLists();
+        foreach ($result as $key => $value) {
+            $result[$key]['open_mode'] = $this->server_translate[$value['open_mode']];
+        }
         $this->view->lists = $result;
     }
 
@@ -34,17 +56,13 @@ class ServerController extends ControllerBase
     public function createAction()
     {
         if ($_POST) {
-            $data['id'] = $this->request->get('id', ['string','trim']);
             $data['name'] = $this->request->get('name', ['string','trim']);
             $data['host'] = $this->request->get('host', ['string','trim']);
             $data['port'] = $this->request->get('port', 'int');
-            $data['open_mode'] = $this->request->get('open_mode', ['string','trim']);
-            $data['full_mode'] = $this->request->get('full_mode', ['string','trim']);
-            $data['color_mode'] = $this->request->get('color_mode', ['string','trim']);
-            $data['visible_mode'] = $this->request->get('visible_mode', ['string','trim']);
-            $data['custom'] = '';
+            $data['open_mode'] = $this->request->get('open_mode', 'int');
+            $data['flag'] = $this->request->get('server_flag', 'int');
 
-            if (!$data['id'] || !$data['name'] || !$data['host']) {
+            if (!$data['name'] || !$data['host']) {
                 Utils::tips('error', '数据不完整', '/server/index');
             }
 
@@ -56,6 +74,10 @@ class ServerController extends ControllerBase
                 Utils::tips('error', '添加失败', '/server/index');
             }
         }
+
+        $this->view->status = $this->server_translate;
+        $this->view->flag = $this->flag;
+        $this->view->is_new = $this->new_server;
     }
 
     /**
@@ -64,7 +86,7 @@ class ServerController extends ControllerBase
     public function editAction()
     {
         $data['id'] = $this->request->get('id', 'int');
-        if (!$data['id']) {
+        if ($data['id'] == null) {
             Utils::tips('error', '数据不完整', '/server/index');
         }
 
@@ -74,16 +96,15 @@ class ServerController extends ControllerBase
         }
 
         if ($_POST) {
-            $data['name'] = $this->request->get('name', ['string','trim']);
-            $data['host'] = $this->request->get('host', ['string','trim']);
-            $data['port'] = $this->request->get('port', 'int');
-            $data['open_mode'] = $this->request->get('open_mode', ['string','trim']);
-            $data['full_mode'] = $this->request->get('full_mode', ['string','trim']);
-            $data['color_mode'] = $this->request->get('color_mode', ['string','trim']);
-            $data['visible_mode'] = $this->request->get('visible_mode', ['string','trim']);
-            $data['custom'] = '';
+            $data['id']        = $this->request->get('id', 'int');
+            $data['name']      = $this->request->get('name', ['string', 'trim']);
+            $data['host']      = $this->request->get('host', ['string', 'trim']);
+            $data['port']      = $this->request->get('port', 'int');
+            $data['open_mode'] = $this->request->get('open_mode', ['string', 'trim']);
+            $data['flag']      = $this->request->get('server_flag', 'int');
+            $data['is_new']    = $this->request->get('is_new', 'int');
 
-            if (!$data['id'] || !$data['name'] || !$data['host'] ) {
+            if ($data['id'] == null || !$data['name'] || !$data['host'] ) {
                 Utils::tips('error', '数据不完整', '/server/index');
             }
             $result = $this->serverModel->editServer($data);
@@ -95,6 +116,9 @@ class ServerController extends ControllerBase
             }
         }
 
+        $this->view->status = $this->server_translate;
+        $this->view->flag = $this->flag;
+        $this->view->is_new = $this->new_server;
         $this->view->server = $server['data'];
     }
 

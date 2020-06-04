@@ -19,8 +19,6 @@
                         <th>服务器IP</th>
                         <th>服务器端口</th>
                         <th>服务器状态</th>
-                        <th>是否爆满</th>
-                        <th>是否可见</th>
 
                         <th>操作</th>
                     </tr>
@@ -28,23 +26,21 @@
                     <tbody>
                     {% for item in lists %}
                     <tr>
-                        <td>{{item['id']}}</td>
+                        <td>{{item['server_id']}}</td>
                         <td>{{item['name']}}</td>
                         <td>{{item['host']}}</td>
                         <td>{{item['port']}}</td>
                         <td>
-                            {%if item['open_mode'] == 'on'%}
+                            {%if item['open_mode'] == '普通' OR item['open_mode'] == '流畅' %}
                             <span class="label bg-success" title="">{{item['open_mode']}}</span>
-                            {% elseif  item['open_mode'] == 'off'%}
+                            {% elseif  item['open_mode'] == '爆满' OR item['open_mode'] == '繁荣'%}
                             <span class="label bg-warning" title="">{{item['open_mode']}}</span>
-                            {% else %}
+                            {% elseif item['open_mode'] == '维护' %}
                             <span class="label bg-info" title="">{{item['open_mode']}}</span>
                             {% endif %}
                         </td>
-                        <td>{{item['full_mode']}}</td>
-                        <td>{{item['visible_mode']}}</td>
                         <td>
-                            <a class="btn btn-sm btn-info" data-pjax="" href="/server/edit?id={{item['id']}}">Edit</a>
+                            <a class="btn btn-sm btn-info" data-pjax="" href="/server/edit?id={{item['server_id']}}">Edit</a>
                         </td>
                     </tr>
                     {% endfor %}

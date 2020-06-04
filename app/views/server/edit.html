@@ -37,54 +37,45 @@
                             <div class="form-group">
                                 <label for="firstname" class="col-sm-2 control-label">状态</label>
                                 <div class="col-sm-8">
-                                    <label class="checkbox-inline i-checks">
-                                        <input name="open_mode" type="radio" value="on" {% if server['open_mode'] == 'on' %}checked{% endif %} ><i></i> On
-                                    </label>
-                                    <label class="checkbox-inline i-checks">
-                                        <input name="open_mode" type="radio" value="sandbox" {% if server['open_mode'] == 'sandbox' %}checked{% endif %}><i></i> Sandbox
-                                    </label>
+                                    <select class="form-control" name="open_mode" id="open_mode">
+                                        {% for key,item in status %}
+                                            {% if key == server['status'] %}
+                                                <option value="{{ key }}" selected>{{ item }}</option>
+                                            {% else %}
+                                                <option value="{{ key }}">{{ item }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="firstname" class="col-sm-2 control-label">是否爆满</label>
+                                <label for="firstname" class="col-sm-2 control-label">服务器推荐状态</label>
                                 <div class="col-sm-8">
-                                    <label class="checkbox-inline i-checks">
-                                        <input name="full_mode" type="radio" value="Yes" {% if server['full_mode'] == 'Yes' %}checked{% endif %} ><i></i> Yes
-                                    </label>
-                                    <label class="checkbox-inline i-checks">
-                                        <input name="full_mode" type="radio" value="No" {% if server['full_mode'] == 'No' %}checked{% endif %}><i></i> No
-                                    </label>
+                                    <select class="form-control" name="server_flag" id="server_flag">
+                                        {% for key,item in flag %}
+                                            {% if key == server['flag'] %}
+                                                <option value="{{ key }}" selected>{{ item }}</option>
+                                            {% else %}
+                                                <option value="{{ key }}">{{ item }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
-
-
-
                             <div class="form-group">
-                                <label for="firstname" class="col-sm-2 control-label">服务器颜色</label>
+                                <label for="firstname" class="col-sm-2 control-label">是否是新服</label>
                                 <div class="col-sm-8">
-                                    <label class="checkbox-inline i-checks">
-                                        <input name="color_mode" type="radio" value="Green" {% if server['color_mode'] == 'Green' %}checked{% endif %} ><i></i> Green
-                                    </label>
-                                    <label class="checkbox-inline i-checks">
-                                        <input name="color_mode" type="radio" value="Red" {% if server['color_mode'] == 'Red' %}checked{% endif %}><i></i> Red
-                                    </label>
+                                    <select class="form-control" name="is_new" id="is_new">
+                                        {% for key,item in is_new %}
+                                            {% if key == server['is_new'] %}
+                                                <option value="{{ key }}" selected>{{ item }}</option>
+                                            {% else %}
+                                                <option value="{{ key }}">{{ item }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
-
-                            <div class="form-group">
-                                <label for="firstname" class="col-sm-2 control-label">是否可见</label>
-                                <div class="col-sm-8">
-                                    <label class="checkbox-inline i-checks">
-                                        <input name="visible_mode" type="radio" value="Yes" {% if server['visible_mode'] == 'Yes' %}checked{% endif %} ><i></i> Yes
-                                    </label>
-                                    <label class="checkbox-inline i-checks">
-                                        <input name="visible_mode" type="radio" value="No" {% if server['visible_mode'] == 'No' %}checked{% endif %}><i></i> No
-                                    </label>
-                                </div>
-                            </div>
-
-
-
                             <div class="line line-dashed b-b line-lg pull-in"></div>
                             <div class="form-group">
                                 <div class="col-sm-8 col-sm-offset-2">

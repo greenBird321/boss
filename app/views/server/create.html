@@ -14,12 +14,12 @@
                     </div>
                     <div class="panel-body">
                         <form class="form-horizontal " data-pjax="" method="post" action="/Server/create" role="form">
-                            <div class="form-group">
-                                <label for="firstname" class="col-sm-2 control-label">区服标识ID</label>
-                                <div class="col-sm-8">
-                                    <input type="text" name="id" class="form-control" placeholder="区服标识ID" required>
-                                </div>
-                            </div>
+                            <!--<div class="form-group">-->
+                                <!--<label for="firstname" class="col-sm-2 control-label">区服标识ID</label>-->
+                                <!--<div class="col-sm-8">-->
+                                    <!--<input type="text" name="id" class="form-control" placeholder="区服标识ID" required>-->
+                                <!--</div>-->
+                            <!--</div>-->
                             <div class="form-group">
                                 <label for="firstname" class="col-sm-2 control-label">区服名称</label>
                                 <div class="col-sm-8">
@@ -38,66 +38,26 @@
                                     <input type="text" name="port" class="form-control" placeholder="端口">
                                 </div>
                             </div>
-
-
-
                             <div class="form-group">
                                 <label for="firstname" class="col-sm-2 control-label">状态</label>
                                 <div class="col-sm-8">
-                                    <label class="checkbox-inline i-checks">
-                                        <input name="open_mode" type="radio" value="on" checked ><i></i> On
-                                    </label>
-                                    <label class="checkbox-inline i-checks">
-                                        <input name="open_mode" type="radio" value="sandbox"><i></i> Sandbox
-                                    </label>
+                                    <select class="form-control" name="open_mode" id="open_mode">
+                                        {% for key,item in status %}
+                                        <option value="{{key}}">{{item}}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="firstname" class="col-sm-2 control-label">是否爆满</label>
+                                <label for="firstname" class="col-sm-2 control-label">服务器推荐</label>
                                 <div class="col-sm-8">
-                                    <label class="checkbox-inline i-checks">
-                                        <input name="full_mode" type="radio" value="Yes" ><i></i> Yes
-                                    </label>
-                                    <label class="checkbox-inline i-checks">
-                                        <input name="full_mode" type="radio" value="No" checked><i></i> No
-                                    </label>
+                                    <select class="form-control" name="server_flag" id="server_flag">
+                                        {% for key,item in flag %}
+                                        <option value="{{key}}">{{item}}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
-
-
-
-                            <div class="form-group">
-                                <label for="firstname" class="col-sm-2 control-label">服务器颜色</label>
-                                <div class="col-sm-8">
-                                    <label class="checkbox-inline i-checks">
-                                        <input name="color_mode" type="radio" value="Green" checked ><i></i> Green
-                                    </label>
-                                    <label class="checkbox-inline i-checks">
-                                        <input name="color_mode" type="radio" value="Red"><i></i> Red
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="firstname" class="col-sm-2 control-label">是否可见</label>
-                                <div class="col-sm-8">
-                                    <label class="checkbox-inline i-checks">
-                                        <input name="visible_mode" type="radio" value="Yes" checked><i></i> Yes
-                                    </label>
-                                    <label class="checkbox-inline i-checks">
-                                        <input name="visible_mode" type="radio" value="No"><i></i> No
-                                    </label>
-                                </div>
-                            </div>
-
-
-
-
-
-
-
-
-
                             <div class="line line-dashed b-b line-lg pull-in"></div>
                             <div class="form-group">
                                 <div class="col-sm-8 col-sm-offset-2">

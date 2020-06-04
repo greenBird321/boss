@@ -18,7 +18,9 @@
                         <th>服务器名称</th>
                         <th>服务器IP</th>
                         <th>服务器端口</th>
+                        <th>合服后服务器ID</th>
                         <th>服务器状态</th>
+                        <th>服务器创建时间</th>
 
                         <th>操作</th>
                     </tr>
@@ -30,6 +32,7 @@
                         <td>{{item['name']}}</td>
                         <td>{{item['host']}}</td>
                         <td>{{item['port']}}</td>
+                        <td>{{ item['merge_server_id']}}</td>
                         <td>
                             {%if item['open_mode'] == '普通' OR item['open_mode'] == '流畅' %}
                             <span class="label bg-success" title="">{{item['open_mode']}}</span>
@@ -39,6 +42,7 @@
                             <span class="label bg-info" title="">{{item['open_mode']}}</span>
                             {% endif %}
                         </td>
+                        <td>{{item['open_time']}}</td>
                         <td>
                             <a class="btn btn-sm btn-info" data-pjax="" href="/server/edit?id={{item['server_id']}}">Edit</a>
                         </td>

@@ -46,7 +46,10 @@ class ServerController extends ControllerBase
         $result = $this->serverModel->getLists();
         foreach ($result as $key => $value) {
             $result[$key]['open_mode'] = $this->server_translate[$value['open_mode']];
+            $result[$key]['open_time'] = empty($result[$key]['open_time']) ? '未知时间': date('Y-m-d H:i:s', $result[$key]['open_time']);
+            $result[$key]['merge_server_id'] = empty($result[$key]['merge_server_id']) ? '尚未合服' : $result[$key]['merge_server_id'];
         }
+
         $this->view->lists = $result;
     }
 
@@ -103,8 +106,9 @@ class ServerController extends ControllerBase
             $data['open_mode'] = $this->request->get('open_mode', ['string', 'trim']);
             $data['flag']      = $this->request->get('server_flag', 'int');
             $data['is_new']    = $this->request->get('is_new', 'int');
+            $data['merge_id']  = $this->request->get('merge_id', 'int');
 
-            if ($data['id'] == null || !$data['name'] || !$data['host'] ) {
+            if ($data['id'] == null || !$data['name']) {
                 Utils::tips('error', '数据不完整', '/server/index');
             }
             $result = $this->serverModel->editServer($data);
@@ -127,7 +131,7 @@ class ServerController extends ControllerBase
      */
     public function removeAction(){
         $data['id'] = $this->request->get('id', 'int');
-        if (!$data['id']) {
+        if ($data['id'] == null) {
             Utils::tips('error', '数据不完整', '/server/index');
         }
 

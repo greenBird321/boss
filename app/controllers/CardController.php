@@ -19,6 +19,7 @@ class CardController extends ControllerBase
     private $pageModel;
     private $utilsModel;
     private $serverModel;
+    private $allow_role;
 
     public function initialize()
     {
@@ -27,6 +28,10 @@ class CardController extends ControllerBase
         $this->pageModel = new Page();
         $this->utilsModel = new Utils();
         $this->serverModel = new Server();
+        $this->allow_role = [
+            100,    // 系统管理员
+            103     // 运营主管
+        ];
     }
 
     /**
@@ -52,14 +57,12 @@ class CardController extends ControllerBase
         $data['type'] = $this->request->get('type', ['string', 'trim']);
         $data['page'] = $currentPage;
         $data['size'] = $pagesize;
-
+        $role_id = $this->session->get('role_id');
         $result = $this->cardModel->getLists($data);
-
         $this->view->page = '';
         if (isset($result['count']) && $result['count'] > 0) {
             $this->view->page = $this->pageModel->getPage($result['count'], $pagesize, $currentPage);
         }
-
         foreach($result['data'] as $key=>$item){
             $tempex = strtotime($item['expired_in']);
             $tempstart = strtotime($item['start_time']);
@@ -71,7 +74,12 @@ class CardController extends ControllerBase
             }else {
                 $result['data'][$key]['expire'] = 0;
             }
-
+            $result['data'][$key]['is_show'] = false;
+            foreach ($role_id as $role) {
+                if (in_array($role, $this->allow_role)) {
+                    $result['data'][$key]['is_show'] = true;
+                }
+            }
         }
 
         $this->view->lists = $result['data'];
@@ -109,14 +117,27 @@ class CardController extends ControllerBase
                 $this->view->card = $card['data'];
                 $this->view->pick("card/edit");
                 break;
-
-                break;
             case 'remove':
                 $this->remove();
                 break;
             case 'download':
                 $this->download();
                 break;
+            case 'examine':
+                if ($_POST) {
+                    $this->examine();
+                }
+                $data['id'] = $this->request->get('id', 'int');
+                if (!$data['id']) {
+                    Utils::tips('error', '数据不完整', '/card/index');
+                }
+                $card = $this->cardModel->findCard($data);
+                if (!$card) {
+                    Utils::tips('error', '没有此数据', '/card/index');
+                }
+
+                $this->view->card = $card['data'];
+                $this->view->pick('card/examine');
         }
     }
 
@@ -142,6 +163,28 @@ class CardController extends ControllerBase
 
         if (!$this->cardModel->downloadCard($card_id, 'Card', 'download')) {
             Utils::tips('error', '下载失败', '/card/index');
+        }
+    }
+
+    // 卡片 - 审核
+    private function examine()
+    {
+        if ($_POST) {
+            $data['id'] = $this->request->get('id', 'int');
+            $data['title'] = $this->request->get('title', ['string', 'trim']);
+            $data['type'] = $this->request->get('type', ['string', 'trim']);
+            $data['expired_in'] = $this->request->get('expired_in', ['string', 'trim']);
+            $data['start_time'] = $this->request->get('start_time', ['string', 'trim']);
+            $data['limit_times'] = $this->request->get('limit_times', ['string', 'trim']);
+            $data['data'] = $this->request->get('data', ['string', 'trim']);
+            $data['intro'] = $this->request->get('formcontent');
+
+            $result = $this->cardModel->examineCard($data);
+            if ($result) {
+                Utils::tips('success', '审核成功，礼包码已经可以使用', '/card/index');
+            } else {
+                Utils::tips('error', '审核失败', '/card/index');
+            }
         }
     }
 

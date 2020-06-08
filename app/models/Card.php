@@ -63,6 +63,17 @@ class Card extends Model
         }
     }
 
+    public function examineCard($data)
+    {
+        $data['status'] = 1;
+        $result = $this->utilsModel->yarRequest('Card', 'modify', $data);
+        if ($result['code'] == 0) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function removeCard($data)
     {
         $result = $this->utilsModel->yarRequest('Card', 'remove', $data);

@@ -13,6 +13,9 @@
                         <i class="fa fa-cube"></i> 卡片信息
                     </div>
                     <div class="panel-body">
+                        <div class="form-group">
+                            <label for="firstname" class="col-sm-12 control-label" style="color: red">注意，如果生成大批量的礼包码，点击提交后请耐心等待，不要重复添加!</label>
+                        </div>
                         <form class="form-horizontal" data-pjax="" method="post" action="/card/manage?do=create" role="form">
                             <div class="form-group">
                                 <label for="firstname" class="col-sm-2 control-label">标题</label>
@@ -82,7 +85,7 @@
                             <textarea class="hidden" name="formcontent" id="formcontent"></textarea>
                             <div class="form-group">
                                 <div class="col-sm-8 col-sm-offset-2">
-                                    <button type="submit" class="btn btn-info">确认添加</button>
+                                    <button type="submit" class="btn btn-info" id="submit" >确认添加</button>
                                     <a class="btn btn-default" onclick="javascript:history.back(-1)">取消添加</a>
                                 </div>
                             </div>
@@ -115,6 +118,14 @@
             language: 'zh-CN',//中文，需要引用zh-CN.js包
             startView: 2,//月视图
             minView: 1, //日期时间选择器所能够提供的最精确的时间选择视图
+        });
+
+        var tag = 0;
+        $("#submit").click(function () {
+           tag += 1;
+           if (tag >= 2) {
+               $(this).attr('disabled', 'disabled');
+           }
         });
     });
 </script>

@@ -192,6 +192,9 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     public function setDefaultApp()
     {
         $games = $this->getGames(1);
+        if (count($games) == 1) {
+            return $games[0];
+        }
         return $games[1];
     }
 

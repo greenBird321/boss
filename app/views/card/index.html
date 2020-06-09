@@ -55,7 +55,10 @@
                                                     {% if item['is_show'] AND item['status'] == 0 %}
                                                     <a class="btn btn-sm btn-success pull-left" href="/card/manage?do=examine&id={{item['id']}}" data-pjax="">审核</a>
                                                     {% endif %}
+
+                                                    {% if item['status'] == 1 %}
                                                     <a class="btn btn-sm btn-info pull-right" href="/card/manage?do=download&id={{item['id']}}" data-pjax="">下载</a>
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                         </div>

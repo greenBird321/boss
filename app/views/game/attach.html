@@ -8,7 +8,7 @@
                 <div ng-controller="TabsDemoCtrl">
 
                     <ul class="nav nav-pills pull-right">
-                        <!--<li><a href="location.href=document.referre"><i class="fa fa-mail-reply-all"></i> 返回 </a></li>-->
+                        <li><a href="javascript:history.back(-1)"><i class="fa fa-mail-reply-all"></i> 返回 </a></li>
                     </ul>
                     <ul id="myTab" class="nav nav-tabs">
                         <li><a href="#fadeother" data-toggle="tab">道具操作</a></li>
@@ -153,6 +153,27 @@
                                         </div>
                                     </div>
 
+                                    <div class="hide other" id="attachServer">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">数量</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="attachServer_amount" name="amount" placeholder="发送道具*发送数量,发送道具*发送数量" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">标题</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="attachServer_title" name="title" placeholder="标题" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">正文</label>
+                                            <div class="col-sm-8">
+                                                <textarea class="form-control" rows="3" id="attachServer_msg" name="msg"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="line line-dashed b-b line-lg pull-in"></div>
                                     <div class="form-group">
                                         <div class="col-sm-8 col-sm-offset-2">
@@ -205,6 +226,8 @@
             $('#mail').attr('class','show other');
         }else if (show == 'coin'){
             $('#coin').attr('class','show other');
+        } else if (show == 'attachServer') {
+            $('#attachServer').attr('class', 'show other');
         } else {
             $('#exp').attr('class', 'show other');
         }
@@ -219,6 +242,8 @@
                 $('#mail').attr('class','show other');
             }else if (action == 'coin'){
                 $('#coin').attr('class','show other');
+            } else if (action == 'attachServer') {
+                $('#attachServer').attr('class', 'show other');
             } else {
                 $('#exp').attr('class', 'show other');
             }
@@ -229,7 +254,7 @@
             var action = $('#prop').val();
             var server = $('#server').val();
 
-            if(action != 'attach' && action != 'mail' && action != 'exp'){
+            if(action != 'attach' && action != 'mail' && action != 'exp' && action != 'attachServer'){
                 var user_id = $('#coin_user_id').val();
                 var amount = $('#coin_amount').val();
             }else{
@@ -239,7 +264,7 @@
             var title = $('#'+action+'_title').val();
             var msg = $('#'+action+'_msg').val();
 
-            if(user_id == ""){
+            if(user_id == "" && action != 'attachServer'){
                 alert('用户ID不能为空');
                 return;
             }
@@ -250,6 +275,11 @@
             }
 
             if(action == 'attach' && amount == ""){
+                alert('礼包ID不能为空');
+                return;
+            }
+
+            if(action == 'attachServer' && amount == ""){
                 alert('礼包ID不能为空');
                 return;
             }

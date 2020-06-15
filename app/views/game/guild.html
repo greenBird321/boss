@@ -1,0 +1,48 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Guild Manage</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <ul class="nav nav-pills pull-right">
+                    <!--<li><a href="javascript:void(0);" id="btn_add"><i class="fa fa-eye"></i> 查询 </a></li>-->
+                </ul>
+                公会查询
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal" action="/game/guild" data-pjax="" method="post" role="form">
+                    <div class="form-group">
+                        <label for="firstname" class="col-sm-2 control-label">服务器</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="server" id="server">
+                                {% for item in lists %}
+                                <option value="{{item['server_id']}}">{{item['name']}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstname" class="col-sm-2 control-label">公会ID</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="guild_id" name="guild_id" class="form-control" id="txt_parentdepartment" placeholder="公会ID与公会名称填一即可">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstname" class="col-sm-2 control-label">公会名称</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="guild_name" name="guild_name" class="form-control" id="txt_departmentlevel" placeholder="公会ID与公会名称填一即可">
+                        </div>
+                    </div>
+                    <div class="line line-dashed b-b line-lg pull-in"></div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-8">
+                            <button type="submit" id="btn_submit"  class="btn btn-info">提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -204,6 +204,7 @@ class Utils extends Model
 
             case 'http':
                 $url1 = $host . "/$service/$lang/$class/$fun/";
+                //dump($url1,$data);exit;
                 $curl = new Curl();
                 $rs = $curl->get($url1,$data);
                 return json_decode($rs,true);

@@ -281,4 +281,24 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             date('Y-m-d H:i:s', time()),
         ));
     }
+
+    public function propinfo($data)
+    {
+        $result = $this->utilsModel->yarRequest('User', 'propInfo', $data);
+        if ($result['code'] == 0) {
+            return $result['data'];
+        } else {
+            return false;
+        }
+    }
+
+    public function getGuild($data)
+    {
+        $result = $this->utilsModel->yarRequest('Guild', 'getGuild', $data);
+        if ($result['code'] == 0) {
+            return $result['data'];
+        } else {
+            return false;
+        }
+    }
 }

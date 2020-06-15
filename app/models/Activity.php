@@ -120,4 +120,12 @@ class Activity extends Model
         $result = $this->utilsModel->yarRequest('Activity', 'logs', $data);
         return $result;
     }
+
+    public function importActivity($data){
+        $result = $this->utilsModel->yarRequest('Activity', 'import', $data);
+        if ($result['code'] == 0) {
+            return true;
+        }
+        return false;
+    }
 }

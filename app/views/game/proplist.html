@@ -1,0 +1,97 @@
+<style>
+    #chartdiv {
+        width: 100%;
+        height: 500px;
+    }
+
+    .amcharts-export-menu-top-right {
+        top: 10px;
+        right: 0;
+    }
+    #example_filter{
+        text-align: right;
+    }
+    #example_paginate{
+        text-align: right;
+    }
+    #example_paginate ul{
+        margin: 0px;
+    }
+    #example_info{
+        padding-top: 8px;
+        white-space:nowrap;
+    }
+
+    #example > thead > tr > th, #example > tbody > tr > td
+    {
+        text-align: center;
+    }
+</style>
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Prop Table</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <ul class="nav nav-pills pull-right">
+                    <li><a href="javascript:history.back(-1)"><i class="fa fa-mail-reply-all"></i> 返回 </a></li>
+                </ul>
+                道具表
+            </div>
+            <div class="table-responsive">
+                <div ng-controller="TabsDemoCtrl">
+                    <div id="myTabContent" class="tab-content">
+                        {% if  list != false %}
+                            <table  id="example" class="table table-striped b-t b-b">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>道具名称</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for key, value in list %}
+                                <tr>
+                                    <td>{{key}}</td>
+                                    <td>{{value}}</td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                        <div class="form-group">
+                            <label for="firstname" class="col-sm-8 control-label"  style="color: red; font-weight: bold;">请上传行为表后查看</label>
+                        </div>
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<script>
+    $(document).ready(function()
+    {
+        $(".table").dataTable(
+            {
+                'language': {
+                    'emptyTable'    : '没有数据',
+                    'search'        : '搜索:',
+                    'zeroRecords'   : '没有数据'
+                },
+
+                "bSort"         : false,
+                "paging"        : false,
+                "bLengthChange" : false,
+                "bInfo"         : false,
+                "columns"       : [
+                    { "width": "50%" },
+                    { "width": "50%" }
+                ]
+            }
+        );
+    })
+</script>
+

@@ -24,7 +24,7 @@
                         </div>
                         <div class="col-xs-4 dk">
                             <div class="wrapper">
-                                <span class="m-b-xs h3 block text-white">{{server}}</span>
+                                <span class="m-b-xs h3 block text-white">{{user['server']}}</span>
                                 <small class="text-muted">服务器</small>
                             </div>
                         </div>
@@ -56,11 +56,7 @@
                 </a>
                 <a href="javascript:void(0);" class="list-group-item">
                     <!--<span class="badge bg-info">30</span>-->
-                    <i class="fa icon-graph fa-fw m-r-xs"></i>  VIP积分 : {{user['vip']}}
-                </a>
-                <a href="javascript:void(0);" class="list-group-item">
-                    <!--<span class="badge bg-danger">10</span>-->
-                    <i class="fa icon-eye fa-fw m-r-xs"></i> 货币 : {{user['coin']}}
+                    <i class="fa icon-graph fa-fw m-r-xs"></i>  战力 : {{user['MPower']}}
                 </a>
             </div>
         </div>
@@ -89,8 +85,8 @@
                             <tbody>
                             {% for name, value in user['attribute'] %}
                             <tr>
-                                <td width="40%">{{name}}</td>
-                                <td>{{value}}</td>
+                            <td width="40%">{{name}}</td>
+                            <td>{{value}}</td>
                             </tr>
                             {% endfor %}
                             </tbody>

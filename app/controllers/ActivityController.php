@@ -8,7 +8,9 @@ namespace MyApp\Controllers;
 
 
 use MyApp\Models\Activity;
+use MyApp\Models\Game;
 use MyApp\Models\Page;
+use MyApp\Models\Server;
 use MyApp\Models\Utils;
 use Phalcon\Mvc\Dispatcher;
 
@@ -17,7 +19,7 @@ class ActivityController extends ControllerBase
 
     private $activityModel;
     private $utilsModel;
-
+    private $serverModel;
     private $pageModel;
 
 
@@ -27,7 +29,7 @@ class ActivityController extends ControllerBase
         $this->activityModel = new Activity();
         $this->utilsModel = new Utils();
         $this->pageModel = new Page();
-
+        $this->serverModel = new Server();
     }
 
 
@@ -120,11 +122,12 @@ class ActivityController extends ControllerBase
      */
     public function importAction()
     {
-        if ($_POST) {
+        if (!empty($_FILES)) {
+            $server = $this->request->get('server');
             $files    = $_FILES;
-            $error    = $files['activitydata']['error'];
-            $filename = $files['activitydata']['name'];
-            $ext      = explode( '.', $filename)[1];
+            $error    = $files['activity']['error'];
+            $filename = $files['activity']['name'];
+            list($name, $ext) = explode('.', $filename);
             $filepath = __DIR__ . '/../../public/files/' . date("Y-m-d H:i:s")."-$filename";
             if ($error > 0) {
                 Utils::tips('error', '上传文件失败', '/activity/import');
@@ -136,19 +139,34 @@ class ActivityController extends ControllerBase
 
             if (!in_array($ext, $allow_extension)) {
                 Utils::tips('error', '文件格式错误', '/activity/import');
+                exit;
             }
 
             // 将文件转移到正式文件夹
-            if (!move_uploaded_file($files['activitydata']['tmp_name'], $filepath)) {
+            if (!move_uploaded_file($files['activity']['tmp_name'], $filepath)) {
                 Utils::tips('error', '上传文件失败,请重试', '/activity/import');
+                exit;
             }
 
             // 读取文件内容
             $content = file_get_contents($filepath);
-            // 调取接口(后端)
-            dump($content);exit;
+
+            $data = [
+                'zone' => $server,
+                'title' => $name,
+                'content' => $content,
+            ];
+            // 发送给rpc并且入库
+            $result = $this->activityModel->importActivity($data);
+            if ($result) {
+                Utils::tips('success', '上传成功', '/activity/import');
+            }
+
+            Utils::tips('error', '上传失败', '/activity/import');
         }
 
+        $server = $this->serverModel->getLists();
+        $this->view->lists = $server;
         $this->view->pick("activity/import");
     }
 

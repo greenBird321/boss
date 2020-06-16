@@ -7,10 +7,6 @@
             <div class="panel-heading">
                 <ul class="nav nav-pills pull-right">
                     <li><a href="/activity/import" data-pjax=""><i class="fa icon-doc"></i> 导入 </a></li>
-                    <li><a href="javascript:void(0);"><i class="fa icon-cloud-download"></i> 导出 </a></li>
-                    <li><a href="/activity/logs"><i class="fa icon-film"></i> 日志 </a></li>
-                    <li><a href="javascript:void(0);" id="btn_add"><i class="fa fa-eye"></i> 查询 </a></li>
-                    <li><a href="/activity/manage?do=create" data-pjax=""><i class="fa fa-plus"></i> 添加 </a></li>
                 </ul>
                 活动管理
             </div>
@@ -22,27 +18,16 @@
                                 {% for item in lists %}
                                 <div class="panel b-b ">
                                     <div class="wrapper-lg">
-                                        <h2 class="m-t-none"><a class="text-info" href="/activity/manage?do=edit&id={{item['id']}}" data-pjax>{{item['title']}}</a></h2>
-                                        <div>
-                                            <p>{{item['content']}}</p>
-                                        </div>
+                                        <h2 class="m-t-none" style="color: #00a8f3">{{item['title']}}</h2>
                                         <div class="line line-lg b-b b-light"></div>
                                         <div class="text-muted">
-                                            <i class="fa fa-clock-o text-muted"></i> <span class="<?php if( strtotime($item['end_time']) < time()){ ?>text-danger-dk<?php }?>">{{item['start_time']}} - {{item['end_time']}}</span>
-                                            <a href="/activity/manage?do=edit&id={{item['id']}}" data-pjax class="m-l-sm"><i class="fa fa-user icon-note text-muted"></i> 修改 </a>
-                                            <a href="/activity/manage?do=cfg&id={{item['id']}}" data-pjax class="m-l-sm"><i class="fa fa-comment-o icon-settings text-muted"></i> 查看 </a>
-                                            {%if item['status'] != 1%}
-                                            <span class="label bg-warning m-l-sm" title="">限制</span>
+                                            <i class="fa fa-clock-o text-muted"></i> <span class="text-info-dk">{{item['create_time']}}</span>
+                                            {%if item['status'] != 0%}
+                                            <span class="label bg-warning m-l-sm" title="">失败</span>
+                                            {% else %}
+                                            <span class="label bg-info m-l-sm" title="">正常</span>
                                             {% endif %}
-                                            {%if item['type'] == 'prepay' %}
-                                            <span class="label bg-info m-l-sm" title="">充值</span>
-                                            {% elseif item['type'] == 'spend' %}
-                                            <span class="label bg-danger m-l-sm" title="">消费</span>
-                                            {% elseif item['type'] == 'login' %}
-                                            <span class="label bg-primary m-l-sm" title="">登录</span>
-                                            {% elseif item['type'] == 'level' %}
-                                            <span class="label bg-success m-l-sm" title="">等级</span>
-                                            {% endif %}
+                                            <span class="label bg-info m-l-sm" title="">服务器id: {{item['zone']}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -63,49 +48,6 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <form id="collapseOne" role="form" action="/activity/index" method="post" data-pjax="">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                <h4 class="modal-title" id="myModalLabel">活动查询</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="txt_parentdepartment">关键字</label>
-                    <input type="text" name="search" class="form-control" value="{{query['search']}}" id="txt_parentdepartment" placeholder="">
-                </div>
-                <div class="form-group">
-                    <label for="txt_departmentname">活动类型</label>
-                    <select class="form-control" name="type">
-                        <option value="">请选择</option>
-                        <option value="prepay" {%if query['type']=='prepay'%}selected{%endif%}>充值</option>
-                        <option value="spend" {%if query['type']=='spend'%}selected{%endif%}>消费</option>
-                        <option value="login" {%if query['type']=='login'%}selected{%endif%}>登录</option>
-                        <option value="exp" {%if query['type']=='exp'%}selected{%endif%}>经验</option>
-                        <option value="level" {%if query['type']=='level'%}selected{%endif%}>等级</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="txt_parentdepartment">开始时间</label>
-                    <input type="text" name="start_time" class="form-control form_datetime" value="{{query['start_time']}}" placeholder="">
-                </div>
-
-                <div class="form-group">
-                    <label for="txt_parentdepartment">结束时间</label>
-                    <input type="text"  name="end_time" class="form-control form_datetime" value="{{query['end_time']}}" placeholder="">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
-                <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>查询</button>
-            </div>
-        </div>
-        </form>
     </div>
 </div>
 

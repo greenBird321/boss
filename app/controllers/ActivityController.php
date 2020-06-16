@@ -41,27 +41,16 @@ class ActivityController extends ControllerBase
         $currentPage = $this->request->get('page', 'int') ? $this->request->get('page', 'int') : 1;
         $pagesize = 10;
 
-        $data['search'] = $this->request->get('search', ['string', 'trim']);
-        $data['type'] = $this->request->get('type', ['string', 'trim']);
-        $start_time = $this->request->get('start_time', ['string', 'trim']);
-        $end_time = $this->request->get('end_time', ['string', 'trim']);
         $data['page'] = $currentPage;
         $data['size'] = $pagesize;
 
-        $data['start_time'] = !empty($start_time) ? $this->utilsModel->toTimeZone($start_time, $this->config->setting->timezone,
-            $this->utilsModel->getTimeZone()) : '';
-        $data['end_time'] = !empty($end_time) ? $this->utilsModel->toTimeZone($end_time, $this->config->setting->timezone,
-            $this->utilsModel->getTimeZone()) : '';
-
-        $result = $this->activityModel->getLists($data);
+        $result = $this->activityModel->getMLlists($data);
 
         $this->view->page = '';
         if (isset($result['count']) && $result['count'] > 0) {
             $this->view->page = $this->pageModel->getPage($result['count'], $pagesize, $currentPage);
         }
         $this->view->lists = $result['data'];
-        $data['start_time'] = $start_time;
-        $data['end_time'] = $end_time;
         $this->view->query = $data;
     }
 
@@ -123,7 +112,7 @@ class ActivityController extends ControllerBase
     public function importAction()
     {
         if (!empty($_FILES)) {
-            $server = $this->request->get('server');
+            $server   = empty($this->request->get('server')) ? 0 : $this->request->get('server');
             $files    = $_FILES;
             $error    = $files['activity']['error'];
             $filename = $files['activity']['name'];
@@ -131,6 +120,11 @@ class ActivityController extends ControllerBase
             $filepath = __DIR__ . '/../../public/files/' . date("Y-m-d H:i:s")."-$filename";
             if ($error > 0) {
                 Utils::tips('error', '上传文件失败', '/activity/import');
+                exit;
+            }
+
+            if (is_array($server)) {
+                $server = implode(',', $server);
             }
 
             $allow_extension = [

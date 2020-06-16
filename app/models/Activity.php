@@ -33,6 +33,24 @@ class Activity extends Model
         return $result;
     }
 
+    /**
+     * todo MLActivity
+     * @param $data
+     */
+    public function getMLlists($data)
+    {
+        $result = $this->utilsModel->yarRequest('Activity', 'ml_lists', $data);
+        if ($result['code'] != 0) {
+            return false;
+        }
+
+        return [
+            'count' => $result['count'],
+            'data' => $result['data']
+        ];
+    }
+
+
     public function createActivity($data)
     {
         $result = $this->utilsModel->yarRequest('Activity', 'create', $data);

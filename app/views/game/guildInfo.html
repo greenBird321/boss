@@ -1,0 +1,129 @@
+<div class="wrapper-md">
+    <div class="row">
+        <div class="col-lg-5">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="clearfix text-center m-t">
+                        <div class="inline">
+                            <div ui-jq="easyPieChart">
+                                <div>
+                                    <img width="120" height="120"
+                                         src="https://secure.gravatar.com/avatar/a0b7f00f544581296bb9eadb283482fa?s=300&d=wavatar"
+                                         class="img-circle" alt="...">
+                                </div>
+                            </div>
+                            <div class="h4 m-t m-b-xs">{{guildInfo['guildName']}}</div>
+                        </div>
+                    </div>
+                </div>
+                <footer class="panel-footer bg-info text-center no-padder">
+                    <div class="row no-gutter">
+                        <div class="col-xs-4">
+                            <div class="wrapper">
+                                <span class="m-b-xs h3 block text-white">{{guildInfo['guildId']}}</span>
+                                <small class="text-muted">公会ID</small>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 dk">
+                            <div class="wrapper">
+                                <span class="m-b-xs h3 block text-white">{{guildInfo['server']}}</span>
+                                <small class="text-muted">服务器</small>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="wrapper">
+                                <span class="m-b-xs h3 block text-white">{{guildInfo['createrName']}}</span>
+                                <small class="text-muted">公会创建人</small>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+        <div class="col-sm-7">
+            <div class="list-group">
+                <a href="javascript:void(0);" class="list-group-item">
+                    <!--<i class="fa fa-chevron-right text-muted"></i>-->
+                    <!--<span class="badge bg-success">14</span>-->
+                    <i class="fa icon-calendar fa-fw m-r-xs"></i> 公会创建时间 : {{guildInfo['create_time']}}
+                </a>
+                <a href="javascript:void(0);" class="list-group-item">
+                    <!--<span class="badge bg-dark">20</span>-->
+                    <i class="fa icon-graduation fa-fw m-r-xs"></i> 公会等级 : {{guildInfo['guildLv']}}
+                </a>
+                <a href="javascript:void(0);" class="list-group-item">
+                    <!--<span class="badge bg-warning">14</span>-->
+                    <i class="fa fa-bookmark fa-fw m-r-xs"></i> 公会经验 : {{guildInfo['guildLe']}}
+                </a>
+                <a href="javascript:void(0);" class="list-group-item">
+                    <!--<span class="badge bg-info">30</span>-->
+                    <i class="fa icon-graph fa-fw m-r-xs"></i> 公会公告 : {{guildInfo['guildDl']}}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    #chartdiv {
+        width: 100%;
+        height: 500px;
+    }
+
+    .amcharts-export-menu-top-right {
+        top: 10px;
+        right: 0;
+    }
+
+    #example_filter {
+        text-align: right;
+    }
+
+    #example_paginate {
+        text-align: right;
+    }
+
+    #example_paginate ul {
+        margin: 0px;
+    }
+
+    #example_info {
+        padding-top: 8px;
+        white-space: nowrap;
+    }
+
+    #example > thead > tr > th, #example > tbody > tr > td {
+        text-align: center;
+    }
+</style>
+
+<div class="table-responsive">
+    <div ng-controller="TabsDemoCtrl">
+        <div id="myTabContent" class="tab-content">
+            <table id="example" class="table table-striped b-t b-b">
+                <thead>
+                <tr>
+                    <th>玩家名称</th>
+                    <th>玩家等级</th>
+                    <th>玩家战力</th>
+                    <th>公会职位</th>
+                    <th>玩家登出时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for key, value in player %}
+                <tr>
+                    <td>{{value['PlayerName']}}</td>
+                    <td>{{value['PlayerLv']}}</td>
+                    <td>{{value['MPower']}}</td>
+                    <td>{{value['GuildGrade']}}</td>
+                    <td>{{value['Logout_time']}}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+

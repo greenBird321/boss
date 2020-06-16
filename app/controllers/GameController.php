@@ -91,10 +91,73 @@ class GameController extends ControllerBase
 
             $result = $this->gameModel->getGuild($data);
 
+            if (!$result) {
+                Utils::tips('error', '没有数据', '/game/guild');
+                exit;
+            }
+            $guild = $result['guildData'];
+            $player = $result['playerData'];
+            // 服务器通用数据
+            $guild_example = [
+                'server' => $guild[0]['ServerID'],     // 服务器id
+                'guildName' => $guild[0]['GuildName'], // 公会名称
+                'createrName' => $guild[0]['CreaterName'], // 创始玩家姓名
+                'guildId' => $guild[0]['GuildID'], //公会id
+                'create_time' => $guild[0]['CreateTime'],  // 公会创建时间
+                'guildLv' => $guild[0]['GuildLevel'],  //公会等级
+                'guildDl' => $guild[0]['GuildDeclaration'], //公会公告
+                'guildLe' => $guild[0]['GuildLevelExp'], // 公会经验
+            ];
+
+            // 需要匹配公会详情,必须上传公会职位表
+            $filepath = __DIR__ . '/../../public/files/' .'guildExcel'.'.xlsx';
+            $guild_position = $this->getXlsx($filepath);
+            if (!empty($guild_position)) {
+                //todo 需要遍历，但是没有表，现在只能空着, 没有表的话以int类型展示
+            }
+
+
+            $this->view->guildInfo   = $guild_example;
+            $this->view->player = $player;
+            return $this->view->pick("game/guildInfo");
         }
+
         $lists             = $this->serverModel->getLists();
         $this->view->lists = $lists;
         $this->view->pick("game/guild");
+    }
+
+    /**
+     * 上传公会职位表格
+     */
+    public function importGuildExcelAction()
+    {
+        if (!empty($_FILES)) {
+
+            $file = $_FILES['guild'];
+            list($file_name, $file_ext) = explode('.', $_FILES);
+            $filepath = __DIR__ . '/../../public/files/' .'guildExcel'.'.'.$file_ext;
+
+            if ($file['error'] > 0) {
+                Utils::tips('error', '上传失败，重新上传', '/game/importGuildExcel');
+                exit;
+            }
+
+            if (!in_array($file_ext, $this->allow_type)) {
+                Utils::tips('error', '文件类型非法', '/game/importGuildExcel');
+                exit;
+            }
+
+            // 将文件转移到正式文件夹
+            if (!move_uploaded_file($file['tmp_name'], $filepath)) {
+                Utils::tips('error', '上传文件失败,请重试', '/game/importGuildExcel');
+            }
+
+            Utils::tips('success', '上传成功', '/game/importGuildExcel');
+            exit;
+        }
+
+        $this->view->pick('game/importGuildExcel');
     }
 
     /**

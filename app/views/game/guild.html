@@ -6,12 +6,15 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <ul class="nav nav-pills pull-right">
-                    <!--<li><a href="javascript:void(0);" id="btn_add"><i class="fa fa-eye"></i> 查询 </a></li>-->
+                    <li><a href="/game/importGuildExcel" data-pjax=""><i class="fa fa-plus"></i> 上传公会职位表 </a></li>
                 </ul>
                 公会查询
             </div>
             <div class="panel-body">
                 <form class="form-horizontal" action="/game/guild" data-pjax="" method="post" role="form">
+                    <div class="form-group">
+                        <label for="firstname" class="col-sm-8 control-label"  style="color: red; font-weight: bold;">注意: 上传.xlxs格式文件,如果不上传公会职位表会以行为id的形式展现,会影响阅读体验</label>
+                    </div>
                     <div class="form-group">
                         <label for="firstname" class="col-sm-2 control-label">服务器</label>
                         <div class="col-sm-8">

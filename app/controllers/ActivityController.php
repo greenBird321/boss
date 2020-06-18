@@ -111,34 +111,31 @@ class ActivityController extends ControllerBase
      */
     public function importAction()
     {
-        if (!empty($_FILES)) {
+        if (!empty($_POST)) {
             $server   = empty($this->request->get('server')) ? 0 : $this->request->get('server');
-            $files    = $_FILES;
-            $error    = $files['activity']['error'];
-            $filename = $files['activity']['name'];
-            list($name, $ext) = explode('.', $filename);
-            $filepath = __DIR__ . '/../../public/files/' . date("Y-m-d H:i:s")."-$filename";
-            if ($error > 0) {
-                Utils::tips('error', '上传文件失败', '/activity/import');
+            $files    = isset($_FILES['activity'])? $_FILES['activity'] : false;
+            if ($files['error'] > 0 || !$files) {
+                echo json_encode(['code' => 1, 'data' => '文件上传失败']);
                 exit;
             }
+            $filename = $files['name'];
+            // 文件保存地址
+            $filepath = __DIR__ . '/../../public/files/' . date("Y-m-d H:i:s")."-$filename";
 
-            if (is_array($server)) {
-                $server = implode(',', $server);
-            }
+            list($name, $ext) = explode('.', $filename);
 
             $allow_extension = [
                 'bytes'
             ];
 
             if (!in_array($ext, $allow_extension)) {
-                Utils::tips('error', '文件格式错误', '/activity/import');
+                echo json_encode(['code' => 1, 'data' => '文件格式错误']);
                 exit;
             }
 
             // 将文件转移到正式文件夹
-            if (!move_uploaded_file($files['activity']['tmp_name'], $filepath)) {
-                Utils::tips('error', '上传文件失败,请重试', '/activity/import');
+            if (!move_uploaded_file($files['tmp_name'], $filepath)) {
+                echo json_encode(['code' => 1, 'data' => '上传文件失败,请重试']);
                 exit;
             }
 
@@ -148,15 +145,17 @@ class ActivityController extends ControllerBase
             $data = [
                 'zone' => $server,
                 'title' => $name,
-                'content' => $content,
+                'content' => base64_encode($content),
             ];
             // 发送给rpc并且入库
             $result = $this->activityModel->importActivity($data);
             if ($result) {
-                Utils::tips('success', '上传成功', '/activity/import');
+                echo json_encode(['code' => 0, 'data' => '上传文件成功']);
+                exit;
             }
 
-            Utils::tips('error', '上传失败', '/activity/import');
+            echo json_encode(['code' => 1, 'data' => '服务端解析失败,重新上传']);
+            exit;
         }
 
         $server = $this->serverModel->getLists();

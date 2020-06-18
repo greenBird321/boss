@@ -14,23 +14,23 @@
                     </div>
                     <div class="panel-body">
                         <div class="portlet-body">
-                            <form class="form-horizontal ng-pristine ng-valid" method="post" action="/game/importExcel" enctype="multipart/form-data">
+                            <div class="form-horizontal ng-pristine ng-valid">
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">导入文件</label>
                                     <div class="col-sm-8">
-                                        <input name='excel' type="file" class="file">
+                                        <input id='excel' name='excel' type="file" class="file">
                                     </div>
                                 </div>
-                                <input type="hidden" name="test" value="test"></input>
+
                                 <div class="line line-dashed b-b line-lg pull-in"></div>
 
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-8">
-                                        <button type="submit"  class="btn btn-info">提交</button>
+                                        <button type="submit"  class="btn btn-info btn-other">提交</button>
                                         <a class="btn btn-default" onclick="javascript:history.back(-1)">取消修改</a>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,46 @@
     </div>
 </div>
 
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel">提示</h4>
+            </div>
+            <div class="modal-body font-thin h1">
+                <span>补发成功</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="../assets/libs/jquery/bootstrap-filestyle/src/bootstrap-filestyle.js"> </script>
 <script type="text/javascript">
     $(":file").filestyle('buttonText', ' 导入 ');
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('.btn-other').on('click',function(){
+            var myFormData = new FormData();
+            myFormData.append('excel',$('#excel')[0].files[0]);
+            $.ajax({
+                url: '/game/importExcel',
+                type: 'POST', //GET
+                async: true,    //或false,是否异步
+                data: myFormData,
+                dataType: 'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+                contentType:false,
+                processData:false,
+                success: function (respon) {
+                    $('.modal-body').html('<span>' + respon['data'] + '</span>');
+                    $('#myModal').modal();
+                }
+            });
+        });
+    });
 </script>

@@ -132,28 +132,28 @@ class GameController extends ControllerBase
      */
     public function importGuildExcelAction()
     {
-        if (!empty($_FILES)) {
-
-            $file = $_FILES['guild'];
-            list($file_name, $file_ext) = explode('.', $_FILES);
-            $filepath = __DIR__ . '/../../public/files/' .'guildExcel'.'.'.$file_ext;
-
-            if ($file['error'] > 0) {
-                Utils::tips('error', '上传失败，重新上传', '/game/importGuildExcel');
+        if (!empty($_POST)) {
+            $file = empty($_FILES['guild']) ? false : $_FILES['guild'];
+            if ($file['error'] > 0 || !$file) {
+                echo json_encode(['error' => 1, 'data' => '上传文件错误']);
                 exit;
             }
 
+            list($file_name, $file_ext) = explode('.', $file['name']);
+            $filepath = __DIR__ . '/../../public/files/' . 'guildExcel' . '.' . $file_ext;
+
             if (!in_array($file_ext, $this->allow_type)) {
-                Utils::tips('error', '文件类型非法', '/game/importGuildExcel');
+                echo json_encode(['error' => 1, 'data' => '文件类型非法']);
                 exit;
             }
 
             // 将文件转移到正式文件夹
             if (!move_uploaded_file($file['tmp_name'], $filepath)) {
-                Utils::tips('error', '上传文件失败,请重试', '/game/importGuildExcel');
+                echo json_encode(['error' => 1, 'data' => '上传文件失败,请重试']);
+                exit;
             }
 
-            Utils::tips('success', '上传成功', '/game/importGuildExcel');
+            echo json_encode(['error' => 0, 'data' => '文件上传成功']);
             exit;
         }
 
@@ -406,27 +406,28 @@ class GameController extends ControllerBase
      */
     public function importExcelAction()
     {
-        if (!empty($_FILES)) {
-            $file = $_FILES['excel'];
-            $extension = explode('.', $file['name'])[1];
-            $filepath = __DIR__ . '/../../public/files/' .'propExcel'.'.'.$extension;
-
-            if ($file['error'] > 0) {
-                Utils::tips('error', '上传失败，重新上传', '/game/importExcel');
+        if (!empty($_POST)) {
+            $file = isset($_FILES['excel'])? $_FILES['excel'] : false;
+            if ($file['error'] > 0 || !$file) {
+                echo json_encode(['error' => 1, 'data' => '文件上传失败']);
                 exit;
             }
 
+            $extension = explode('.', $file['name'])[1];
+            $filepath = __DIR__ . '/../../public/files/' .'propExcel'.'.'.$extension;
+
             if (!in_array($extension, $this->allow_type)) {
-                Utils::tips('error', '文件类型非法', '/game/importExcel');
+                echo json_encode(['error' => 1, 'data' => '文件非法']);
                 exit;
             }
 
             // 将文件转移到正式文件夹
             if (!move_uploaded_file($file['tmp_name'], $filepath)) {
-                Utils::tips('error', '上传文件失败,请重试', '/game/importExcel');
+                echo json_encode(['error' => 1, 'data' => '上传文件失败,请重试']);
+                exit;
             }
 
-            Utils::tips('success', '上传成功', '/game/importExcel');
+            echo json_encode(['error' => 0, 'data' => '上传文件成功']);
             exit;
         }
 
@@ -537,24 +538,28 @@ class GameController extends ControllerBase
      */
     public function importActionExcelAction(){
         if ($_FILES) {
-            $file = $_FILES['prop'];
-            list($filename, $extension) = explode('.', $file['name']);
-            if (!in_array($extension, $this->allow_type)) {
-                Utils::tips('error', '文件类型非法', '/game/importActionExcel');
+            $file = empty($_FILES['prop'])?false:$_FILES['prop'];
+
+            if ($file['error'] != 0 || !$file) {
+                echo json_encode(['error' => 1, 'data' => '上传失败，重新上传']);
                 exit;
             }
-            if ($file['error'] != 0) {
-                Utils::tips('error', '上传失败，重新上传', '/game/importActionExcel');
+
+            list($filename, $extension) = explode('.', $file['name']);
+
+            if (!in_array($extension, $this->allow_type)) {
+                echo json_encode(['error' => 1, 'data' => '文件类型非法']);
                 exit;
             }
 
             $filepath = __DIR__ . '/../../public/files/' .'actionExcel'.'.'.$extension;
             // 将文件转移到正式文件夹
             if (!move_uploaded_file($file['tmp_name'], $filepath)) {
-                Utils::tips('error', '上传文件失败,请重试', '/game/importActionExcel');
+                echo json_encode(['error' => 1, 'data' => '上传文件失败,请重试']);
+                exit;
             }
 
-            Utils::tips('info', '上传成功', '/game/importActionExcel');
+            echo json_encode(['error' => 0, 'data' => '上传文件成功']);
             exit;
         }
         $this->view->pick("game/importActionExcel");

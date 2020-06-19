@@ -301,4 +301,14 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             return false;
         }
     }
+
+    public function getGuildNews($data)
+    {
+        $result = $this->utilsModel->yarRequest('Guild', 'getGuildNews', $data);
+        if ($result['code'] == 0) {
+            return $result['data'];
+        } else {
+            return false;
+        }
+    }
 }

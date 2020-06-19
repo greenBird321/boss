@@ -46,7 +46,7 @@ class Activity extends Model
 
         return [
             'count' => $result['count'],
-            'data' => $result['data']
+            'data' => isset($result['data'])?$result['data']:[],
         ];
     }
 

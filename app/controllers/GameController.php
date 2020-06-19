@@ -95,7 +95,7 @@ class GameController extends ControllerBase
                 Utils::tips('error', '没有数据', '/game/guild');
                 exit;
             }
-            $guild = $result['guildData'];
+            $guild  = $result['guildData'];
             $player = $result['playerData'];
             // 服务器通用数据
             $guild_example = [
@@ -110,15 +110,35 @@ class GameController extends ControllerBase
             ];
 
             // 需要匹配公会详情,必须上传公会职位表
-            $filepath = __DIR__ . '/../../public/files/' .'guildExcel'.'.xlsx';
-            $guild_position = $this->getXlsx($filepath);
+            $position_file = 'guildExcel';
+            // 需要上传公会消息表 展示公会消息
+            $news_name = 'guildNewsExcel';
+            // 获取公会职位
+            $guild_position = $this->getXlsx($position_file);
+            // 获取消息模板
+            $guild_news = $this->getXlsx($news_name, 3, [0, 2]);
+            // 数据组装
             if (!empty($guild_position)) {
                 //todo 需要遍历，但是没有表，现在只能空着, 没有表的话以int类型展示
             }
+            // 消息模板数据
+            $msg = [];
+            if ($guild_news) {
+                // 获取对应公会的消息记录
+                $news = $this->gameModel->getGuildNews($data);
+                foreach ($news as $value) {
+                    $show_str = $guild_news[$value['NewsType']];
+                    $r        = preg_replace_array("/(?:\{)(.(\d*))(?:\})/i", explode(';', $value['NewsParam']), $show_str);
+                    $msg[]    = [
+                        'news' => $r,
+                        'send_time' => date("Y-m-d H:i:s", $value['Timestamp'])
+                    ];
+                }
+            }
 
-
-            $this->view->guildInfo   = $guild_example;
-            $this->view->player = $player;
+            $this->view->guildInfo = $guild_example;
+            $this->view->player    = $player;
+            $this->view->guildnews = $msg;
             return $this->view->pick("game/guildInfo");
         }
 
@@ -193,7 +213,7 @@ class GameController extends ControllerBase
                 $this->view->trade = $this->tradeModel->getList($where, 1, $count);
                 $tmp               = array_combine($result['data']['money_type'], $result['data']['money_num']);
                 unset($result['data']['money_type'], $result['data']['money_num']);
-                $proplist = $this->getXlsx(__DIR__ . '/../../public/files/' .'propExcel'.'.xlsx');
+                $proplist = $this->getXlsx('propExcel');
                 $final = [];
 
                 foreach ($tmp as $key => $value) {
@@ -435,25 +455,65 @@ class GameController extends ControllerBase
     }
 
     /**
-     * 获取xlsx的内容
-     * @param $filepath
+     * 上传公会消息模板
      */
-    public function getXlsx($filepath)
+    public function importGuildNewsAction()
     {
-        if ($xlsx = SimpleXLSX::parse($filepath)) {
+        if (!empty($_FILES)) {
+            $file = isset($_FILES['guildnews'])? $_FILES['guildnews'] : false;
+            if ($file['error'] > 0 || !$file) {
+                echo json_encode(['error' => 1, 'data' => '文件上传失败']);
+                exit;
+            }
+
+            $extension = explode('.', $file['name'])[1];
+            $filepath = __DIR__ . '/../../public/files/' .'guildNewsExcel'.'.'.$extension;
+
+            if (!in_array($extension, $this->allow_type)) {
+                echo json_encode(['error' => 1, 'data' => '文件非法']);
+                exit;
+            }
+
+            // 将文件转移到正式文件夹
+            if (!move_uploaded_file($file['tmp_name'], $filepath)) {
+                echo json_encode(['error' => 1, 'data' => '上传文件失败,请重试']);
+                exit;
+            }
+
+            echo json_encode(['error' => 0, 'data' => '上传文件成功']);
+            exit;
+        }
+
+        $this->view->pick('game/importGuildNewsExcel');
+    }
+
+    /**
+     * 获取xlsx的内容
+     * @param $filename
+     * @param $fieldnum: 需要读取的列数量
+     */
+    public function getXlsx($filename, $start = 3 ,$index = [0, 1])
+    {
+        $path = __DIR__ . '/../../public/files/' . $filename . '.xlsx';
+        if ($xlsx = SimpleXLSX::parse($path)) {
             foreach ($xlsx->rows() as $key => $value) {
                 // 从第三行，才是正式数据
-                if ($key < 3) {
+                if ($key < $start) {
                     continue;
                 }
-                // 把道具表的id和描述 拼接成一个数组
-                $result[$value[0]] = $value[1];
+                list($s, $e) = $index;
+                if ($s > $e) {
+                    return false;
+                }
+                // 把表的id和描述 拼接成一个数组
+                $result[$value[$s]] = $value[$e];
+
             }
 
             return $result;
         } else {
             // todo 应该记录日志
-           return false;
+            return false;
         }
     }
 
@@ -462,7 +522,7 @@ class GameController extends ControllerBase
      */
     public function proplistAction()
     {
-        $result = $this->getXlsx(__DIR__ . '/../../public/files/' .'propExcel'.'.xlsx');
+        $result = $this->getXlsx('propExcel');
         $this->view->list = $result;
     }
 
@@ -497,11 +557,11 @@ class GameController extends ControllerBase
             }
 
             // 获取action描述
-            $filepath = __DIR__ . '/../../public/files/' .'actionExcel'.'.xlsx';
+            $filepath = 'actionExcel';
             $action_list = empty($this->getXlsx($filepath)) ? [] : $this->getXlsx($filepath);
             $get      = false;
             $consume = false;
-            $proplist = $this->getXlsx(__DIR__ . '/../../public/files/' . 'propExcel' . '.xlsx');
+            $proplist = $this->getXlsx('propExcel');
 
             // 数据组装
             foreach ($result as $key => $value) {
@@ -569,8 +629,8 @@ class GameController extends ControllerBase
      * 查看行为表
      */
     public function actionlistAction(){
-        $filepath = __DIR__ . '/../../public/files/' .'actionExcel'.'.xlsx';
-        $list = $this->getXlsx($filepath);
+        $file_name = 'actionExcel';
+        $list = $this->getXlsx($file_name);
         $this->view->list = $list;
         $this->view->pick("game/actionlist");
     }

@@ -63,67 +63,70 @@
             </div>
         </div>
     </div>
-</div>
-<style>
-    #chartdiv {
-        width: 100%;
-        height: 500px;
-    }
-
-    .amcharts-export-menu-top-right {
-        top: 10px;
-        right: 0;
-    }
-
-    #example_filter {
-        text-align: right;
-    }
-
-    #example_paginate {
-        text-align: right;
-    }
-
-    #example_paginate ul {
-        margin: 0px;
-    }
-
-    #example_info {
-        padding-top: 8px;
-        white-space: nowrap;
-    }
-
-    #example > thead > tr > th, #example > tbody > tr > td {
-        text-align: center;
-    }
-</style>
-
-<div class="table-responsive">
-    <div ng-controller="TabsDemoCtrl">
-        <div id="myTabContent" class="tab-content">
-            <table id="example" class="table table-striped b-t b-b">
-                <thead>
-                <tr>
-                    <th>玩家名称</th>
-                    <th>玩家等级</th>
-                    <th>玩家战力</th>
-                    <th>公会职位</th>
-                    <th>玩家登出时间</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for key, value in player %}
-                <tr>
-                    <td>{{value['PlayerName']}}</td>
-                    <td>{{value['PlayerLv']}}</td>
-                    <td>{{value['MPower']}}</td>
-                    <td>{{value['GuildGrade']}}</td>
-                    <td>{{value['Logout_time']}}</td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
+    <div class="col-lg-12">
+        <label style="font-weight: bold; color: red;">
+            如果不上传公会消息模板的话则公会消息不会显示任何内容！
+        </label>
     </div>
-</div>
 
+    <!-- tab -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div ng-controller="TabsDemoCtrl">
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#home" data-toggle="tab">成员属性</a>
+                    </li>
+                    <li><a href="#ios" data-toggle="tab">公会消息</a></li>
+
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="home" style="background: #fff">
+                        <table class="table table-bordered">
+
+                            <thead>
+                            <tr>
+                                <th><i class="fa icon-badge fa-fw m-r-xs"></i>玩家名称</th>
+                                <th><i class="fa icon-equalizer fa-fw m-r-xs"></i>玩家等级</th>
+                                <th><i class="fa icon-anchor fa-fw m-r-xs"></i>玩家战力</th>
+                                <th><i class="fa icon-bulb fa-fw m-r-xs"></i>公会职位</th>
+                                <th><i class="fa icon-calculator fa-fw m-r-xs"></i>玩家登出时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for key, value in player %}
+                            <tr>
+                                <td width="25%">{{value['PlayerName']}}</td>
+                                <td>{{value['PlayerLv']}}</td>
+                                <td>{{value['MPower']}}</td>
+                                <td>{{value['GuildGrade']}}</td>
+                                <td>{{value['Logout_time']}}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="ios" style="background: #fff;">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>发送消息内容</th>
+                                <th>发送消息时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for news in guildnews %}
+                            <tr>
+                                <td width="85%">{{news['news']}}</td>
+                                <td width>{{news['send_time']}}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / tab -->
+</div>

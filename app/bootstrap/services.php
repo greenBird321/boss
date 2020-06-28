@@ -142,6 +142,19 @@ $di->set('dbTrade', function () use ($di) {
 }, true);
 
 
+$di->set('dbAccount', function () use ($di) {
+    $connection = new DbAdapter(array(
+        'host'     => $di['config']->db_account->host,
+        'username' => $di['config']->db_account->username,
+        'password' => $di['config']->db_account->password,
+        'dbname'   => $di['config']->db_account->dbname,
+        'charset'  => $di['config']->db_account->charset
+    ));
+    $connection->setEventsManager($di['eventsManager']);
+    return $connection;
+}, true);
+
+
 // Database Event
 // https://docs.phalconphp.com/zh/latest/reference/dispatching.html#dispatch-loop-events
 $di['eventsManager']->attach('db', function ($event, $connection) use ($di) {

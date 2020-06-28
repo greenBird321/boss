@@ -1,0 +1,53 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Black List</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <ul class="nav nav-pills pull-right">
+                    <li><a href="/account/create" data-pjax=""><i class="fa fa-plus"></i> 创建 </a></li>
+                </ul>
+                黑名单列表
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="padder-v padder">
+                        <div class="m-b-md">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped b-t b-light">
+                                        <thead>
+                                        <tr>
+                                            <th width="25%">账号ID</th>
+                                            <th>封禁开始时间</th>
+                                            <th>封禁结束时间</th>
+                                            <th>更多</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for blacklist in blacklists %}
+                                        <tr>
+                                            <td width="25%">{{blacklist['user_id']}}</td>
+                                            <td>{{blacklist['start_time']}}</td>
+                                            <td>{{blacklist['end_time']}}</td>
+                                            <td>
+                                                <a class="btn btn-sm btn-info" data-pjax=""
+                                                   href="/account/info?id={{ blacklist['id'] }}">查看</a>
+
+                                                <a class="btn btn-sm btn-danger" data-pjax=""
+                                                   href="/account/delete?id={{ blacklist['id'] }}">删除</a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

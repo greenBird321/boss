@@ -311,4 +311,24 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             return false;
         }
     }
+
+    public function getConsumeList($parameter)
+    {
+        $result = $this->utilsModel->yarRequest('Game', 'getConsumeList', $parameter);
+        if ($result['code'] == 0) {
+            return $result['data'];
+        } else {
+            return false;
+        }
+    }
+
+    public function getShopRanking($parameter)
+    {
+        $result = $this->utilsModel->yarRequest('Game', 'shopRanking', $parameter);
+        if ($result['code'] == 0) {
+            return $result['data'];
+        } else {
+            return false;
+        }
+    }
 }

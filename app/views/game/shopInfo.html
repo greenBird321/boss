@@ -1,0 +1,103 @@
+<style>
+    #chartdiv {
+        width: 100%;
+        height: 500px;
+    }
+
+    .amcharts-export-menu-top-right {
+        top: 10px;
+        right: 0;
+    }
+    #example_filter{
+        text-align: right;
+    }
+    #example_paginate{
+        text-align: right;
+    }
+    #example_paginate ul{
+        margin: 0px;
+    }
+    #example_info{
+        padding-top: 8px;
+        white-space:nowrap;
+    }
+
+    #example > thead > tr > th, #example > tbody > tr > td
+    {
+        text-align: center;
+    }
+</style>
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Shop Ranking</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                商城销售详情
+            </div>
+            <div class="table-responsive">
+                <div ng-controller="TabsDemoCtrl">
+                    <ul id="myTab" class="nav nav-tabs">
+                        {% for key,item in tab %}
+                        <li {% if key == 100001 %}class="active"{% endif %}>
+                            <a href="#{{key}}" data-toggle="tab">{{item}}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div id="myTabContent" class="tab-content">
+                        {% for key,item in data %}
+                        <div class="tab-pane fade in {% if key == 100001 %}active{% endif %}" id="{{key}}" style="background: #fff">
+                            <table   id="example" class="table table-striped b-t b-b">
+                                <thead>
+                                <tr>
+                                    <th>道具</th>
+                                    <th>购买道具数量</th>
+                                    <th>购买时间</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for value in item %}
+                                <tr>
+                                    <td>{{value['ItemId']}}</td>
+                                    <td>{{value['buy_propNum']}}</td>
+                                    <td>{{value['ActionTime']}}</td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function()
+    {
+        $(".tab-pane > table").dataTable(
+            {
+                'language': {
+                    'emptyTable'    : '没有数据',
+                    'search'        : '搜索:',
+                    'zeroRecords'   : '没有数据'
+                },
+
+                "bSort"         : false,
+                "paging"        : false,
+                "bLengthChange" : false,
+                "bInfo"         : false,
+                "columns"       : [
+                    { "width": "33%" },
+                    { "width": "33%" },
+                    { "width": "33%" },
+                ]
+            }
+        );
+    })
+</script>
+

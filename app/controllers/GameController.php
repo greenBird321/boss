@@ -22,6 +22,8 @@ class GameController extends ControllerBase
     private $allow_role;
     private $allow_type;
     private $role_describe;
+    private $shop;
+
 
     public function initialize()
     {
@@ -66,7 +68,13 @@ class GameController extends ControllerBase
             'high_arenaPoint' => '高阶竞技场积分',
             'GM_privilege' => 'gm权限',
         ];
-
+        $this->shop = [
+            '100001' => '精品商店',
+            '100002' => '随机商店',
+            '100005' => '公会商店',
+            '100011' => '幻境商店',
+            '100012' => '竞技商店'
+        ];
     }
 
     public function indexAction()
@@ -259,6 +267,40 @@ class GameController extends ControllerBase
      */
     public function topAction()
     {
+    }
+
+    /**
+     * 消耗排行
+     */
+    public function consumeAction()
+    {
+        if ($_POST) {
+            $data['serverId'] = $this->request->get('server', 'int');
+            $data['start']    = strtotime($this->request->get('start'));
+            $data['end']      = strtotime($this->request->get('end'));
+
+            if (empty($data['start']) || empty($data['end'])) {
+                Utils::tips('error', '数据不全', '/game/consume');
+                exit;
+            }
+
+            $response = $this->gameModel->getConsumeList($data);
+            // 获取行为表
+            $actionEx = $this->getXlsx('actionExcel', 3, [0, 2]);
+            // 将行为id翻译为中文
+            foreach ($response as $key => $value) {
+                if (isset($actionEx[$value['actionId']])) {
+                    $response[$key]['action'] = $actionEx[$value['actionId']];
+                } else {
+                    $response[$key]['action'] = $value['actionId'];
+                }
+            }
+
+            $this->view->datas = $response;
+            return $this->view->pick("game/consumeList");
+        }
+
+        $this->view->lists = $this->serverModel->getLists();
     }
 
     /**
@@ -598,7 +640,7 @@ class GameController extends ControllerBase
      */
     public function importActionExcelAction(){
         if ($_FILES) {
-            $file = empty($_FILES['prop'])?false:$_FILES['prop'];
+            $file = empty($_FILES['action'])?false:$_FILES['action'];
 
             if ($file['error'] != 0 || !$file) {
                 echo json_encode(['error' => 1, 'data' => '上传失败，重新上传']);
@@ -630,8 +672,46 @@ class GameController extends ControllerBase
      */
     public function actionlistAction(){
         $file_name = 'actionExcel';
-        $list = $this->getXlsx($file_name);
+        $list = $this->getXlsx($file_name, 3 , [0, 2]);
         $this->view->list = $list;
         $this->view->pick("game/actionlist");
+    }
+
+    /**
+     * 商城销售 商城销售排行
+     */
+    public function shopAction() {
+        if ($_POST) {
+            $data['zone']  = $this->request->get('server');
+            $data['start'] = $this->request->get('start');
+            $data['end']   = $this->request->get('end');
+
+            $response = $this->gameModel->getShopRanking($data);
+            if (!$response) {
+                echo json_encode(['error' => 1, 'data' => '数据获取失败']);
+                exit;
+            }
+
+            // 获取道具表
+            $propInfo = $this->getXlsx('propExcel');
+            foreach ($response as $key => $value) {
+                $shop[$value['Action']][] = [
+                    'ActionTime' => date("Y-m-d H:i:s", $value['ActionTime']),
+                    'Action' => $value['Action'],
+                    'shopName' => isset($this->shop[$value['Action']]) ? $this->shop[$value['Action']] : $value['Action'],
+                    'ItemId' => isset($propInfo[$value['ItemId']]) ? $propInfo[$value['ItemId']] : $value['ItemId'],
+                    'buy_propNum' => $value['buy_propNum'],
+                ];
+
+                $tab[$value['Action']] = $this->shop[$value['Action']];
+            }
+
+            $this->view->tab  = $tab;
+            $this->view->data = $shop;
+            return $this->view->pick('game/shopInfo');
+        }
+
+        $this->view->lists = $this->serverModel->getLists();
+        $this->view->pick('game/shop');
     }
 }

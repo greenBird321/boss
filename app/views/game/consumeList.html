@@ -1,0 +1,37 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Consume Ranking</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <ul class="nav nav-pills pull-right">
+                <li><a href="javascript:history.back(-1)"><i class="fa fa-mail-reply-all"></i> 返回 </a></li>
+            </ul>
+            <div class="panel-heading">
+                钻石消耗排行
+            </div>
+            <div class="table-responsive">
+                <div ng-controller="TabsDemoCtrl">
+                    <div id="myTabContent" class="tab-content">
+                        <table  id="example" class="table table-striped b-t b-b">
+                            <thead>
+                            <tr>
+                                <th>消耗钻石(由高到低排序)</th>
+                                <th>行为(如果行为表中没有此行为，则显示id)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for data in datas %}
+                            <tr>
+                                <td>{{data['diamonds']}}</td>
+                                <td>{{data['action']}}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

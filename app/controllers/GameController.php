@@ -39,7 +39,7 @@ class GameController extends ControllerBase
             'attachServer' => '全服发奖',
         ];
         $this->allow_role = [
-            100,    // 系统管理员
+            101,    // 系统管理员
             103     // 运营主管
         ];
         $this->allow_type = [
@@ -259,13 +259,6 @@ class GameController extends ControllerBase
      * 信息完善奖励
      */
     public function completeAction()
-    {
-    }
-
-    /**
-     * 充值排行
-     */
-    public function topAction()
     {
     }
 
@@ -713,5 +706,128 @@ class GameController extends ControllerBase
 
         $this->view->lists = $this->serverModel->getLists();
         $this->view->pick('game/shop');
+    }
+
+    /**
+     * 用户白名单列表，只支持ip地址
+     */
+    public function whiteListAction()
+    {
+       $lists = $this->gameModel->getWhiteList();
+       $need = true;
+       if (empty($lists)) {
+           $need = false;
+       }
+       $this->view->lists = $lists;
+       $this->view->need = $need;
+       $this->view->pick('game/whitelist');
+    }
+
+    /**
+     * 添加白名单
+     */
+    public function createWhiteListAction(){
+        if ($_POST) {
+            $data['ip'] = $this->request->get('ip', 'trim');
+            $data['flag'] = 0;
+
+            if (empty($data['ip'])) {
+                Utils::tips('error', '请输入ip地址', '/game/whiteList');
+                exit;
+            }
+
+            if (!$this->gameModel->addWhiteList($data)) {
+                Utils::tips('error', '添加失败', '/game/whiteList');
+                exit;
+            }
+
+            Utils::tips('success', '添加成功', '/game/whiteList');
+            exit;
+        }
+
+        $this->view->pick('game/addWhitelist');
+    }
+
+    /**
+     * 删除白名单
+     */
+    public function deleteWhiteListAction() {
+        $data['id'] = $this->request->get('id', 'int');
+        if (!$this->gameModel->deletWhiteList($data)) {
+            Utils::tips('error', '删除失败', '/game/whiteList');
+            exit;
+        }
+
+        Utils::tips('success', '删除成功', '/game/whiteList');
+        exit;
+    }
+
+    /**
+     * GM命令
+     */
+    public function gmCommandAction()
+    {
+        if ($_POST) {
+            $data['server']  = $this->request->get('server');
+            $data['gm']      = trim($this->request->get('gm'));
+            if (empty($data['server']) || empty($data['gm'])) {
+                Utils::tips('error', '数据不完整', '/game/gmCommand');
+                exit;
+            }
+
+            if (!$this->gameModel->sendGmData($data)) {
+                Utils::tips('error', 'Gm命令发送失败', '/game/gmCommand');
+                exit;
+            }
+
+            Utils::tips('success', 'Gm命令发送成功', '/game/gmCommand');
+            exit;
+        }
+
+        $this->view->lists = $this->serverModel->getLists();
+        $this->view->pick('game/gmCommand');
+    }
+
+    /**
+     * 发送请求
+     * @param $url
+     * @param $data
+     */
+    public function post($url, $data) {
+
+        //初使化init方法
+        $ch = curl_init();
+
+        //指定URL
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        //设定请求后返回结果
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        //声明使用POST方式来进行发送
+        curl_setopt($ch, CURLOPT_POST, 1);
+
+        //发送什么数据呢
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+
+
+        //忽略证书
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
+        //忽略header头信息
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+
+        //设置超时时间
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+
+        //发送请求
+        $output = curl_exec($ch);
+
+        //关闭curl
+        curl_close($ch);
+
+        //返回数据
+        return $output;
     }
 }

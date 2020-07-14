@@ -331,4 +331,44 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             return false;
         }
     }
+
+    public function getWhiteList()
+    {
+        $result = $this->utilsModel->yarRequest('Game', 'getWhiteList', []);
+        if ($result['code'] == 0) {
+            return $result['data'];
+        } else {
+            return  false;
+        }
+    }
+
+    public function addWhiteList($parameter)
+    {
+        $result = $this->utilsModel->yarRequest('Game', 'addWhiteList', $parameter);
+        if ($result['code'] == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function deletWhiteList($parameter)
+    {
+        $result = $this->utilsModel->yarRequest('Game', 'deleteWhiteList', $parameter);
+        if ($result['code'] == 0) {
+            return true;
+        } else {
+            return  false;
+        }
+    }
+
+    public function sendGmData($parameter)
+    {
+        $result = json_decode($this->utilsModel->yarRequest('Game', 'sendGmData', $parameter), true);
+        if ($result['code'] == 0 ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

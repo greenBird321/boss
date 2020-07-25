@@ -112,7 +112,11 @@ class ActivityController extends ControllerBase
     public function importAction()
     {
         if (!empty($_POST)) {
-            $server   = empty($this->request->get('server')) ? 0 : $this->request->get('server');
+            $server   = $this->request->get('server');
+            if (empty($server)) {
+                echo json_encode(['code' => 1, 'data' => '至少选择一个服务器']);
+                exit;
+            }
             $files    = isset($_FILES['activity'])? $_FILES['activity'] : false;
             if ($files['error'] > 0 || !$files) {
                 echo json_encode(['code' => 1, 'data' => '文件上传失败']);
@@ -125,7 +129,7 @@ class ActivityController extends ControllerBase
             list($name, $ext) = explode('.', $filename);
 
             $allow_extension = [
-                'bytes'
+                'xlsx', 'bytes'
             ];
 
             if (!in_array($ext, $allow_extension)) {

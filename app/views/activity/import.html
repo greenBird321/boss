@@ -17,14 +17,14 @@
                         <div class="form-horizontal">
                             <div class="form-group ">
                                 <label for="firstname" class="col-sm-6 control-label"
-                                       style="color: red; font-weight: bold;">注意: 需上传.bytes格式文件, 如不选择服务器，则代表全服</label>
+                                       style="color: red; font-weight: bold;">注意: 需上传.bytes格式文件</label>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">选择服务器</label>
                                 <div class="col-sm-8">
                                     {% for item in lists %}
-                                    <input name="server" type="checkbox" value="{{item['server_id']}}"
+                                    <input name="server" type="checkbox" checked="checked" value="{{item['server_id']}}"
                                            class="checkbox-inline">{{item['name']}}</input>
                                     {% endfor %}
                                 </div>

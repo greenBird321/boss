@@ -720,7 +720,7 @@ class GameController extends ControllerBase
             $data['zone']  = $this->request->get('server');
             $response = $this->gameModel->getProductRanking($data);
             if (!$response) {
-                echo json_encode(['error' => 1, 'data' => '数据获取失败']);
+                Utils::tips('error', '数据获取失败', '/game/productSaleRanking');
                 exit;
             }
             // 获取道具表

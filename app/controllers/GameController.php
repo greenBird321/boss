@@ -122,13 +122,21 @@ class GameController extends ControllerBase
             // 需要上传公会消息表 展示公会消息
             $news_name = 'guildNewsExcel';
             // 获取公会职位
-            $guild_position = $this->getXlsx($position_file);
+            $guild_position = $this->getXlsx($position_file, 1, [0, 1]);
             // 获取消息模板
             $guild_news = $this->getXlsx($news_name, 3, [0, 2]);
             // 数据组装
             if (!empty($guild_position)) {
                 //todo 需要遍历，但是没有表，现在只能空着, 没有表的话以int类型展示
+                foreach ($player as $k => $play) {
+                    foreach ($play as $key => $value) {
+                        if ($key == 'GuildGrade') {
+                            $player[$k]['GuildGrade'] = $guild_position[$play[$key]];
+                        }
+                    }
+                }
             }
+            
             // 消息模板数据
             $msg = [];
             if ($guild_news) {

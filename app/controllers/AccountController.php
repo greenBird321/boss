@@ -36,7 +36,8 @@ class AccountController extends ControllerBase
      */
     public function blacklistAction()
     {
-        $blacklists = $this->accountModel->getBlacklist();
+        $app_id = $this->session->get('app');
+        $blacklists = $this->accountModel->getBlacklist($app_id);
         foreach ($blacklists as $key => $value) {
             $blacklists[$key]['start_time'] = date("Y-m-d H:i:s", $value['start_time']);
             $blacklists[$key]['end_time']   = date("Y-m-d H:i:s", $value['end_time']);
@@ -135,14 +136,14 @@ class AccountController extends ControllerBase
 
             // 如果不是账号id的话，则请求Rpc换取账号id
             if (empty($account_id)) {
-                $response = $this->utilsModel->yarRequest('User', 'userinfo',
+                $response = $this->utilsModel->yarRequest('User', 'getAccountId',
                     [
                         'zone' => $zone,
                         'role_id' => $role_id,
                         'name' => $name
                     ]);
                 if ($response['code'] != 0) {
-                    Utils::tips('error', '获取accountId失败', '/account/blacklist');
+                    Utils::tips('error', '获取用户失败', '/account/blacklist');
                     exit;
                 }
 
@@ -151,26 +152,38 @@ class AccountController extends ControllerBase
             }
 
             // 查询之前有没有加过，如果有则不能添加
-            $account = $this->accountModel->findAccountByUserId($account_id);
-
+            $app_id  = $this->session->get('app');
+            $account = $this->accountModel->findAccountByUserId($account_id, $app_id);
             if (!empty($account['count'])) {
-                Utils::tips('error', '该用户已经被禁言', '/account/blacklist');
+                Utils::tips('error', '该用户已经被拉黑', '/account/blacklist');
                 exit;
             }
 
-            $result = $this->accountModel->saveData([
+            // 更新accounts表的账号状态
+            $r = $this->accountModel->updateAccountById($account_id, 0);
+
+            // 换取role_id
+            if (empty($role_id)) {
+                // 通过现有的数据换取role_id
+                $role_id = $this->accountModel->getRoleId(['zone' => $zone, 'account_id' => $account_id, 'user_name' => $name]);
+            }
+
+            //todo 此处通知cp，让用户立即下线
+            $response = $this->accountModel->playerOffline(['zone' => $zone, 'role_id' => $role_id]);
+
+            if (!$r || !$response) {
+                Utils::tips('error', '创建失败', '/account/blacklist');
+                exit;
+            }
+
+            // 当所有操作都通过，才进行记录
+            $this->accountModel->setBlackListData([
                 'user_id' => $account_id,
+                'app_id' => $app_id,
                 'zone' => $zone,
                 'start_time' => strtotime($start),
                 'end_time' => strtotime($end)
             ]);
-            // 更新accounts表的账号状态
-            $r = $this->accountModel->updateAccountById($account_id, 0);
-
-            if (!$result || !$r) {
-                Utils::tips('error', '创建失败', '/account/blacklist');
-                exit;
-            }
 
             Utils::tips('success', '创建成功', '/account/blacklist');
             exit;

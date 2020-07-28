@@ -1,16 +1,17 @@
 <div class="app-content-body ">
     <div class="bg-light lter b-b wrapper-md">
-        <h1 class="m-n font-thin h3">Consume Ranking</h1>
+        <h1 class="m-n font-thin h3">Product Sale Ranking</h1>
     </div>
     <div class="wrapper-md">
         <div class="panel panel-default">
             <ul class="nav nav-pills pull-right">
+                <li><a href="javascript:history.back(-1)"><i class="fa fa-mail-reply-all"></i> 返回 </a></li>
             </ul>
             <div class="panel-heading">
-                钻石消耗排行查询
+                产品销售排行
             </div>
             <div class="panel-body">
-                <form class="form-horizontal" action="/game/consume" data-pjax="" method="post" role="form">
+                <form class="form-horizontal" action="/game/productSaleRanking" data-pjax="" method="post" role="form">
                     <div class="form-group"  >
                         <label for="firstname" class="col-sm-2 control-label">服务器</label>
                         <div class="col-sm-8">
@@ -72,7 +73,7 @@
 <script>
     $(document).ready(function () {
         $(".form_datetime").datetimepicker({
-            format: "yyyy-mm-dd hh:ii:ss",
+            format: "yyyy-mm-dd hh:00:00",
             autoclose: true,
             todayBtn: true,
             todayHighlight: true,
@@ -90,7 +91,7 @@
             var end = $('#end').val();
 
             $.ajax({
-                url: '/game/consume',
+                url: '/game/shop',
                 type: 'POST', //GET
                 async: true,    //或false,是否异步
                 data: {

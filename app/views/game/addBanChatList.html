@@ -1,16 +1,17 @@
 <div class="app-content-body ">
     <div class="bg-light lter b-b wrapper-md">
-        <h1 class="m-n font-thin h3">Consume Ranking</h1>
+        <h1 class="m-n font-thin h3">Add Ban Player Chat </h1>
     </div>
     <div class="wrapper-md">
         <div class="panel panel-default">
             <ul class="nav nav-pills pull-right">
+                <li><a href="javascript:history.back(-1)"><i class="fa fa-mail-reply-all"></i> 返回 </a></li>
             </ul>
             <div class="panel-heading">
-                钻石消耗排行查询
+                添加封禁聊天玩家
             </div>
             <div class="panel-body">
-                <form class="form-horizontal" action="/game/consume" data-pjax="" method="post" role="form">
+                <form class="form-horizontal" action="/game/addBanPlayerChat" data-pjax="" method="post" role="form">
                     <div class="form-group"  >
                         <label for="firstname" class="col-sm-2 control-label">服务器</label>
                         <div class="col-sm-8">
@@ -19,6 +20,15 @@
                                 <option value="{{item['server_id']}}">{{item['name']}}</option>
                                 {% endfor %}
                             </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstname" class="col-sm-2 control-label">角色id</label>
+                        <div class="col-sm-8">
+                            <div class="input-group w-full">
+                                <input id="role_id" class="form-control"
+                                       type="text" name="role_id" size="16">
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -43,7 +53,7 @@
                             <button type="submit" class="btn btn-info" id="submit">提交</button>
                         </div>
                     </div>
-                </form>
+                </>
             </div>
         </div>
     </div>
@@ -88,15 +98,17 @@
             var server = $('#server').val();
             var start = $('#start').val();
             var end = $('#end').val();
+            var role_id = $('#role_id').val();
 
             $.ajax({
-                url: '/game/consume',
+                url: '/game/addBanPlayerChat',
                 type: 'POST', //GET
                 async: true,    //或false,是否异步
                 data: {
                     'server': server,
                     'start': start,
-                    'end': end
+                    'end': end,
+                    'role_id': role_id
                 },
                 dataType: 'json',    //返回的数据格式：json/xml/html/script/jsonp/text,
                 success: function (respon) {

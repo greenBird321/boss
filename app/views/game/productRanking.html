@@ -1,0 +1,95 @@
+<style>
+    #chartdiv {
+        width: 100%;
+        height: 500px;
+    }
+
+    .amcharts-export-menu-top-right {
+        top: 10px;
+        right: 0;
+    }
+    #example_filter{
+        text-align: right;
+    }
+    #example_paginate{
+        text-align: right;
+    }
+    #example_paginate ul{
+        margin: 0px;
+    }
+    #example_info{
+        padding-top: 8px;
+        white-space:nowrap;
+    }
+
+    #example > thead > tr > th, #example > tbody > tr > td
+    {
+        text-align: center;
+    }
+</style>
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Product Sale Ranking</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <ul class="nav nav-pills pull-right">
+                    <li><a href="javascript:history.back(-1)"><i class="fa fa-mail-reply-all"></i> 返回 </a></li>
+                </ul>
+                产品销售排行(前50名)  <span style="color: red">如不上传道具表则以产品id显示</span>
+            </div>
+            <div class="table-responsive">
+                <div ng-controller="TabsDemoCtrl">
+                    <div id="myTabContent" class="tab-content">
+                        <table  id="example" class="table table-striped b-t b-b">
+                            <thead>
+                            <tr>
+                                <th>商店名称</th>
+                                <th>道具名称</th>
+                                <th>购买数量</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for key, value in tab %}
+                            <tr>
+
+                                <td>{{value['shop']}}</td>
+                                <td>{{value['product']}}</td>
+                                <td>{{value['buy_num']}}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function()
+    {
+        $(".table").dataTable(
+            {
+                'language': {
+                    'emptyTable'    : '没有数据',
+                    'search'        : '搜索:',
+                    'zeroRecords'   : '没有数据'
+                },
+
+                "bSort"         : false,
+                "paging"        : true,
+                "bLengthChange" : false,
+                "bInfo"         : false,
+                "columns"       : [
+                    { "width": "33.3%" },
+                    { "width": "33.3%" },
+                    { "width": "33.3%" }
+                ]
+            }
+        );
+    })
+</script>
+

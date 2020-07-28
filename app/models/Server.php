@@ -21,8 +21,7 @@ class Server extends Model
         if ($result['code'] == 0) {
             $this->getServerLists();
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -46,8 +45,7 @@ class Server extends Model
         if ($result['code'] == 0) {
             $this->getServerLists();
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -58,8 +56,7 @@ class Server extends Model
         if ($result['code'] == 0) {
             $this->getServerLists();
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -69,8 +66,7 @@ class Server extends Model
         $result = $this->utilsModel->yarRequest('Zone', 'lists', array());
         if (!$result['data']) {
             return array();
-        }
-        else {
+        } else {
             $_COOKIE['serverLists'] = json_encode($result['data']);
             //setcookie('serverLists', json_encode($result['data']), time() + 7200, '/');    //线上不生效，线下没事
         }

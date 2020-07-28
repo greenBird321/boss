@@ -671,7 +671,7 @@ class GameController extends ControllerBase
     }
 
     /**
-     * 商城销售 商城销售排行
+     * 商城销售
      */
     public function shopAction() {
         if ($_POST) {
@@ -689,7 +689,7 @@ class GameController extends ControllerBase
             $propInfo = $this->getXlsx('propExcel');
             foreach ($response as $key => $value) {
                 $shop[$value['Action']][] = [
-                    'ActionTime' => date("Y-m-d H:i:s", $value['ActionTime']),
+//                    'ActionTime' => date("Y-m-d H:i:s", $value['ActionTime']),
                     'Action' => $value['Action'],
                     'shopName' => isset($this->shop[$value['Action']]) ? $this->shop[$value['Action']] : $value['Action'],
                     'ItemId' => isset($propInfo[$value['ItemId']]) ? $propInfo[$value['ItemId']] : $value['ItemId'],
@@ -706,6 +706,91 @@ class GameController extends ControllerBase
 
         $this->view->lists = $this->serverModel->getLists();
         $this->view->pick('game/shop');
+    }
+
+    /**
+     * 商品销售排行(前50)
+     * @return \Phalcon\Mvc\View
+     */
+    public function productSaleRankingAction()
+    {
+        if ($_POST) {
+            $data['start'] = $this->request->get('start');
+            $data['end']   = $this->request->get('end');
+            $data['zone']  = $this->request->get('server');
+            $response = $this->gameModel->getProductRanking($data);
+            if (!$response) {
+                echo json_encode(['error' => 1, 'data' => '数据获取失败']);
+                exit;
+            }
+            // 获取道具表
+            $propInfo = $this->getXlsx('propExcel');
+            foreach ($response as $value) {
+                $tab[] = [
+                    'shop' => $this->shop[$value['Action']],
+                    'product' => isset($propInfo[$value['ItemId']]) ? $propInfo[$value['ItemId']] : $value['ItemId'],
+                    'buy_num' => $value['buy_num']
+                ];
+            }
+
+            $this->view->tab = $tab;
+            return $this->view->pick('game/productRanking');
+        }
+
+        $this->view->lists = $this->serverModel->getLists();
+        $this->view->pick('game/product');
+    }
+
+    /**
+     * 禁止用户聊天列表
+     */
+    public function banPlayerChatListAction()
+    {
+        $app_id               = $this->session->get('app');
+        $ban_list             = $this->gameModel->getBanPlayerChatList($app_id);
+        $this->view->banLists = $ban_list;
+        $this->view->pick('game/banChatList');
+    }
+
+    /**
+     * 增加禁止用户聊天
+     */
+    public function addBanPlayerChatAction()
+    {
+        if ($_POST) {
+            $parameter['zone']    = $this->request->get('server');
+            $parameter['start']   = $this->request->get('start');
+            $parameter['end']     = $this->request->get('end');
+            $parameter['role_id'] = $this->request->get('role_id');
+            $parameter['app_id']  = $this->session->get('app');
+            $result = $this->gameModel->addBanPlayer($parameter);
+            if (!$result) {
+                Utils::tips('error', '添加失败', '/game/banPlayerChatList');
+                exit;
+            }
+
+            Utils::tips('success', '添加成功', '/game/banPlayerChatList');
+            exit;
+        }
+
+        $this->view->lists    = $this->serverModel->getLists();
+        $this->view->pick('game/addBanChatList');
+    }
+
+    /**
+     * 从禁言名单中移除
+     */
+    public function removeBanPlayerChatListAction()
+    {
+        $id     = $this->request->get('id');
+        $result = $this->gameModel->removeBanPlayerChat($id);
+        if (!$result) {
+           Utils::tips('error', '移除失败','/game/banPlayerChatList');
+           exit;
+        }
+
+        Utils::tips('success', '移除成功', '/game/banPlayerChatList');
+        exit;
     }
 
     /**

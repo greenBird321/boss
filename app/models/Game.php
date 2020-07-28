@@ -332,6 +332,16 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         }
     }
 
+    public function getProductRanking($parameter)
+    {
+        $result = $this->utilsModel->yarRequest('Game', 'productRanking', $parameter);
+        if ($result['code'] == 0) {
+            return $result['data'];
+        } else {
+            return false;
+        }
+    }
+
     public function getWhiteList()
     {
         $result = $this->utilsModel->yarRequest('Game', 'getWhiteList', []);
@@ -370,5 +380,62 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         } else {
             return false;
         }
+    }
+
+    public function getBanPlayerChatList($app_id)
+    {
+        $sql = "SELECT `id`, `role_id`, `server_id`, `ban_start`,`ban_end` FROM `ban` WHERE `app_id`={$app_id}";
+        $query = DI::getDefault()->get('dbData')->query($sql); //$query->numRows();
+        $query->setFetchMode(Db::FETCH_ASSOC);
+        $data = $query->fetchAll();
+        return $data;
+    }
+
+    public function addBanPlayer($parameter)
+    {
+        $create_time = date('Y-m-d H:i:s', time());
+        $sql = "INSERT INTO `ban` (`app_id`, `role_id`, `server_id`, `ban_start`, `ban_end`, `create_time`) VALUES (?, ?, ?, ?, ?, ?)";
+        DI::getDefault()->get('dbData')->execute($sql,[
+            $parameter['app_id'],
+            $parameter['role_id'],
+            $parameter['zone'],
+            $parameter['start'],
+            $parameter['end'],
+            $create_time
+        ]);
+        // 通知游戏服务端禁言
+        $response = $this->utilsModel->yarRequest('Game', 'addBanChatPlayer',
+            [
+                'role_id' => $parameter['role_id'],
+                'server_id' => $parameter['zone'],
+                'start_time' => strtotime($parameter['start']),
+                'end_time' => strtotime($parameter['end'])
+            ]
+        );
+        if ($response['code'] != 0) {
+            return false;
+        } else {
+            return  true;
+        }
+    }
+
+    public function removeBanPlayerChat($id)
+    {
+        $sql = "SELECT `role_id`, `server_id` FROM `ban` WHERE id={$id}";
+        $query = DI::getDefault()->get('dbData')->query($sql);
+        $query->setFetchMode(Db::FETCH_ASSOC);
+        $data = $query->fetch();
+        // 通知游戏服务端解除禁言
+        $response = $this->utilsModel->yarRequest('Game', 'removeBanPlayer', [
+            'role_id' => $data['role_id'],
+            'server_id' => $data['server_id']
+        ]);
+        if ($response['code'] != 0) {
+            return false;
+        }
+        // 删除本地记录
+        $sql = "DELETE FROM `ban` WHERE `id`=?";
+        DI::getDefault()->get('dbData')->execute($sql, [$id]);
+        return true;
     }
 }

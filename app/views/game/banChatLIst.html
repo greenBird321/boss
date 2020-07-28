@@ -1,0 +1,52 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Ban List</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <ul class="nav nav-pills pull-right">
+                    <li><a href="/game/addBanPlayerChat" data-pjax=""><i class="fa fa-plus"></i> 添加 </a></li>
+                </ul>
+                封禁聊天列表
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="padder-v padder">
+                        <div class="m-b-md">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped b-t b-light">
+                                        <thead>
+                                        <tr>
+                                            <th width="25%">角色ID</th>
+                                            <th>区服id</th>
+                                            <th>封禁开始时间</th>
+                                            <th>封禁结束时间</th>
+                                            <th>更多</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for banlist in banLists %}
+                                        <tr>
+                                            <td width="20%">{{banlist['role_id']}}</td>
+                                            <td>{{banlist['server_id']}}</td>
+                                            <td>{{banlist['ban_start']}}</td>
+                                            <td>{{banlist['ban_end']}}</td>
+                                            <td>
+                                                <a class="btn btn-sm btn-danger " data-pjax=""
+                                                   href="/game/removeBanPlayerChatList?id={{ banlist['id'] }}">移除封禁</a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

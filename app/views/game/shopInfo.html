@@ -34,7 +34,7 @@
     <div class="wrapper-md">
         <div class="panel panel-default">
             <div class="panel-heading">
-                商城销售详情
+                商城道具销售
             </div>
             <div class="table-responsive">
                 <div ng-controller="TabsDemoCtrl">
@@ -53,7 +53,6 @@
                                 <tr>
                                     <th>道具</th>
                                     <th>购买道具数量</th>
-                                    <th>购买时间</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -61,7 +60,6 @@
                                 <tr>
                                     <td>{{value['ItemId']}}</td>
                                     <td>{{value['buy_propNum']}}</td>
-                                    <td>{{value['ActionTime']}}</td>
                                 </tr>
                                 {% endfor %}
                                 </tbody>
@@ -88,11 +86,10 @@
                 },
 
                 "bSort"         : false,
-                "paging"        : false,
+                "paging"        : true,
                 "bLengthChange" : false,
                 "bInfo"         : false,
                 "columns"       : [
-                    { "width": "33%" },
                     { "width": "33%" },
                     { "width": "33%" },
                 ]

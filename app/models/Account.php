@@ -14,18 +14,27 @@ use Phalcon\Db;
 
 class Account extends Model
 {
-    // 获取黑名单列表
-    public function getBlacklist()
+    public $utilsModel;
+
+    public function initialize()
     {
-        $sql = "SELECT
-	* 
+        $this->utilsModel = new Utils();
+    }
+
+    // 获取黑名单列表
+    public function getBlacklist($app_id)
+    {
+        $sql   = "SELECT
+	`id`, `user_id`, `start_time`, `end_time`
 FROM
 	blacklist 
+WHERE
+    `app_id`={$app_id}
 ORDER BY
 	id DESC";
-       $query = DI::getDefault()->get('dbAccount')->query($sql);
-       $query->setFetchMode(Db::FETCH_ASSOC);
-       return $query->fetchAll();
+        $query = DI::getDefault()->get('dbAccount')->query($sql);
+        $query->setFetchMode(Db::FETCH_ASSOC);
+        return $query->fetchAll();
     }
 
     // 保存数据
@@ -44,7 +53,7 @@ VALUES
     // 通过id获取数据详情
     public function getDataById($id)
     {
-        $sql = "SELECT * FROM `blacklist` WHERE id={$id}";
+        $sql   = "SELECT * FROM `blacklist` WHERE id={$id}";
         $query = DI::getDefault()->get('dbAccount')->query($sql);
         $query->setFetchMode(Db::FETCH_ASSOC);
         return $query->fetch();
@@ -53,7 +62,14 @@ VALUES
     // 通过id删除数据
     public function deleteDataById($id)
     {
-        $sql = "DELETE FROM `blacklist` WHERE  id={$id}";
+        $sql = "DELETE FROM `blacklist` WHERE id={$id}";
+        return DI::getDefault()->get('dbAccount')->execute($sql);
+    }
+
+    // 通过userId和app_id删除数据
+    public function deleteDataByUserId($data)
+    {
+        $sql = "DELETE FROM `blacklist` WHERE `user_id`={$data['account_id']} AND `app_id`={$data['app_id']}";
         return DI::getDefault()->get('dbAccount')->execute($sql);
     }
 
@@ -79,11 +95,35 @@ WHERE
     }
 
     // 通过userId查询数据
-    public function findAccountByUserId($user_id)
+    public function findAccountByUserId($user_id, $app_id)
     {
-        $sql = "SELECT COUNT(1) `count` FROM `blacklist` WHERE user_id={$user_id}";
+        $sql   = "SELECT COUNT(1) `count` FROM `blacklist` WHERE user_id={$user_id} AND app_id={$app_id}";
         $query = DI::getDefault()->get('dbAccount')->query($sql);
         $query->setFetchMode(Db::FETCH_ASSOC);
         return $query->fetch();
+    }
+
+    public function setBlackListData($data)
+    {
+        $sql = "INSERT INTO `blacklist` (`user_id`, `app_id`, `zone`, `start_time`, `end_time`) VALUES ({$data['user_id']}, {$data['app_id']}, {$data['zone']}, {$data['start_time']}, {$data['end_time']})";
+        return DI::getDefault()->get('dbAccount')->execute($sql);
+    }
+
+    public function getRoleId($data)
+    {
+        $response = $this->utilsModel->yarRequest('User', 'getRoleId', $data);
+        if ($response['code'] == 0) {
+            return $response['data']['RoleID'];
+        }
+        return false;
+    }
+
+    public function playerOffline($roleInfo)
+    {
+        $response = $this->utilsModel->yarRequest('User', 'playerOffline', $roleInfo);
+        if ($response['code'] == 0) {
+            return true;
+        }
+        return false;
     }
 }

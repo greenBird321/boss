@@ -1,0 +1,54 @@
+<div class="app-content-body ">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">White List</h1>
+    </div>
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <ul class="nav nav-pills pull-right">
+                    <li><a href="/game/createWhiteList" data-pjax=""><i class="fa fa-plus"></i> 添加 </a></li>
+                </ul>
+                白名单列表
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="padder-v padder">
+                        <div class="m-b-md">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped b-t b-light">
+                                        <thead>
+                                        <tr>
+                                            <th>白名单IP</th>
+                                            <th>状态</th>
+                                            <th>更多</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            {% if need %}
+                                            {% for list in lists %}
+                                            <td>{{list['IP']}}</td>
+                                            <td>
+                                                <span class="label bg-success" title="">正常</span>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-sm btn-info" data-pjax=""
+                                                   href="/game/deleteWhiteList?id={{list['AutoId']}}">删除</a>
+                                            </td>
+                                            {% endfor %}
+                                            {% else %}
+                                            <td>暂无数据</td>
+                                            {% endif %}
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

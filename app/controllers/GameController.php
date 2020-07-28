@@ -719,7 +719,7 @@ class GameController extends ControllerBase
             $data['end']   = $this->request->get('end');
             $data['zone']  = $this->request->get('server');
             $response = $this->gameModel->getProductRanking($data);
-            if (!$response) {
+            if (is_bool($response)) {
                 Utils::tips('error', '数据获取失败', '/game/productSaleRanking');
                 exit;
             }

@@ -681,12 +681,14 @@ class GameController extends ControllerBase
 
             $response = $this->gameModel->getShopRanking($data);
             if (!$response) {
-                echo json_encode(['error' => 1, 'data' => '数据获取失败']);
+                Utils::tips('error', '数据获取失败', '/game/shop');
                 exit;
             }
 
             // 获取道具表
             $propInfo = $this->getXlsx('propExcel');
+            $shop = [];
+            $tab = [];
             foreach ($response as $key => $value) {
                 $shop[$value['Action']][] = [
 //                    'ActionTime' => date("Y-m-d H:i:s", $value['ActionTime']),

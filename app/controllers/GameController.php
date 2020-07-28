@@ -218,7 +218,6 @@ class GameController extends ControllerBase
                 Utils::tips('error', '服务器ID错误', '/game/player');
                 exit;
             }
-
             if ($result['code'] == 1) {
                 Utils::tips('error', '没有该用户', '/game/player');
                 exit;
@@ -227,20 +226,25 @@ class GameController extends ControllerBase
                 $where['user_id']  = $result['data']['account_id'];
                 $count             = $this->tradeModel->getCount($where);
                 $this->view->trade = $this->tradeModel->getList($where, 1, $count);
-                $tmp               = array_combine($result['data']['money_type'], $result['data']['money_num']);
+                $tmp               = [];
+                if (isset($result['data']['money_type']) && isset($result['data']['money_num']))
+                {
+                    $tmp           = array_combine($result['data']['money_type'], $result['data']['money_num']);
+                }
                 unset($result['data']['money_type'], $result['data']['money_num']);
                 $proplist = $this->getXlsx('propExcel');
                 $final = [];
-
-                foreach ($tmp as $key => $value) {
-                    if ($proplist) {
-                        $final[$proplist[$key]] = $value;
-                    } else {
-                        $final[$key] = $value;
+                if (!empty($tmp)) {
+                    foreach ($tmp as $key => $value) {
+                        if ($proplist) {
+                            $final[$proplist[$key]] = $value;
+                        } else {
+                            $final[$key] = $value;
+                        }
+                        unset($result['data'][$key]);
                     }
-                    unset($result['data'][$key]);
                 }
-
+            
                 foreach ($result['data'] as $k => $v) {
                     $final[$this->role_describe[$k]] = $v;
                 }

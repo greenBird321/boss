@@ -160,7 +160,7 @@ class GameController extends ControllerBase
      */
     public function importGuildExcelAction()
     {
-        if (!empty($_POST)) {
+        if (!empty($_FILES)) {
             $file = empty($_FILES['guild']) ? false : $_FILES['guild'];
             if ($file['error'] > 0 || !$file) {
                 echo json_encode(['error' => 1, 'data' => '上传文件错误']);

@@ -725,6 +725,7 @@ class GameController extends ControllerBase
             }
             // 获取道具表
             $propInfo = $this->getXlsx('propExcel');
+            $tab = [];
             foreach ($response as $value) {
                 $tab[] = [
                     'shop' => $this->shop[$value['Action']],

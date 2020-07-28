@@ -680,7 +680,7 @@ class GameController extends ControllerBase
             $data['end']   = $this->request->get('end');
 
             $response = $this->gameModel->getShopRanking($data);
-            if (!$response) {
+            if (is_bool($response)) {
                 Utils::tips('error', '数据获取失败', '/game/shop');
                 exit;
             }

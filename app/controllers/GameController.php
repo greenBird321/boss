@@ -54,7 +54,7 @@ class GameController extends ControllerBase
             'exp'   => '经验值',
             'morale' => '士气',
             'arenaRegular' => '普通竞技场积分',
-            'logoutTime' => '角色最近下线时间',
+            'LogoutTime' => '角色最近下线时间',
             'mPower' => '角色阵型战力',
             'device_id' => '设备id',
             'device' => '设备系统',

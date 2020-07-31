@@ -30,17 +30,6 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">服务器</label>
-                                        <div class="col-sm-8">
-                                            <select class="form-control" name="server" id="server">
-                                                {% for item in server %}
-                                                <option value="{{item['server_id']}}">{{item['name']}}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                    </div>
-
                                     <div class="hide other" id="coin">
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">玩家ID</label>
@@ -127,6 +116,18 @@
                                     </div>
 
                                     <div class="hide other" id="mail">
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">服务器</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" name="server" id="server">
+                                                    {% for item in server %}
+                                                    <option value="{{item['server_id']}}">{{item['name']}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">玩家ID</label>
                                             <div class="col-sm-8">
@@ -154,6 +155,16 @@
                                     </div>
 
                                     <div class="hide other" id="attachServer">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">服务器</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" name="server" id="server">
+                                                    {% for item in server %}
+                                                    <option value="{{item['server_id']}}">{{item['name']}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">数量</label>
                                             <div class="col-sm-8">

@@ -25,7 +25,7 @@ class Account extends Model
     public function getBlacklist($app_id)
     {
         $sql   = "SELECT
-	`id`, `user_id`, `start_time`, `end_time`
+	`id`, `role_id`, `start_time`, `end_time`
 FROM
 	blacklist 
 WHERE
@@ -121,6 +121,35 @@ WHERE
     public function playerOffline($roleInfo)
     {
         $response = $this->utilsModel->yarRequest('User', 'playerOffline', $roleInfo);
+        if ($response['code'] == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getRoleIdByName($paramer) 
+    {
+        $response = $this->utilsModel->yarRequest('User', 'getRoleIdByName', $paramer);
+        if ($response['code'] == 0) {
+            return $response['data'];
+        }
+        return false;
+    }
+
+    public function findRoleByRoleId($paramer)
+    {
+        $sql = "SELECT
+        COUNT( 1 )  as count
+    FROM
+        `blacklist` 
+    WHERE
+        `role_id` = {$paramer['roleId']} 
+    AND `app_id` = {$paramer['appId']}";
+    }
+
+    public function cancelPlayerBan($paramer)
+    {
+        $response = $this->utilsModel->yarRequest('User', 'cancelPlayerBan', ['role_id' => $paramer['role_id'], 'zone' => $paramer['zone']]);
         if ($response['code'] == 0) {
             return true;
         }

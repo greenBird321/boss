@@ -102,12 +102,16 @@ class AccountController extends ControllerBase
     {
         $id      = $this->request->get('id');
         $account = $this->accountModel->getDataById($id);
+        // 通知服务端解除玩家封禁
+        $result = $this->accountModel->cancelPlayerBan($account);
+        if ($result['code'] != 0) {
+            Utils::tips('error', '游戏服务器移除失败', '/account/blacklist');
+            exit;
+        }
+
         $result  = $this->accountModel->deleteDataById($id);
 
-        // 更新accounts表的状态为正常
-        $r      = $this->accountModel->updateAccountById($account['user_id']);
-
-        if (!$result || !$r) {
+        if (!$result) {
             Utils::tips('error', '删除失败', '/account/blacklist');
             exit;
         }
@@ -123,65 +127,47 @@ class AccountController extends ControllerBase
     {
         if ($_POST) {
             $zone       = $this->request->get('server', 'trim');
-            $start      = $this->request->get('start', 'trim');
             $end        = $this->request->get('end', 'trim');
-            $account_id = $this->request->get('account_id', 'trim');
             $role_id    = $this->request->get('role_id', 'trim');
             $name       = $this->request->get('name', 'trim');
 
-            if (strtotime($start) >= strtotime($end)) {
+            if (strtotime($end) <= time()) {
                 Utils::tips('error', '结束时间不能小于开始时间', '/account/blacklist');
                 exit;
             }
 
-            // 如果不是账号id的话，则请求Rpc换取账号id
-            if (empty($account_id)) {
-                $response = $this->utilsModel->yarRequest('User', 'getAccountId',
-                    [
-                        'zone' => $zone,
-                        'role_id' => $role_id,
-                        'name' => $name
-                    ]);
-                if ($response['code'] != 0) {
-                    Utils::tips('error', '获取用户失败', '/account/blacklist');
+            // 通过用户名换取用户id
+            if (!empty($name)) {
+                $role_id = $this->accountModel->getRoleIdByName(['zone' => $zone, 'name' => $name]);
+                if (!$role_id) {
+                    Utils::tips('error', '获取角色id错误', '/account/blacklist');
                     exit;
                 }
-
-                // 获取返回的accountId
-                $account_id = $response['data']['PlatformUID'];
             }
 
             // 查询之前有没有加过，如果有则不能添加
             $app_id  = $this->session->get('app');
-            $account = $this->accountModel->findAccountByUserId($account_id, $app_id);
+            $account = $this->accountModel->findRoleByRoleId(['roleId' => $role_id, 'appId' => $app_id]);
+
             if (!empty($account['count'])) {
                 Utils::tips('error', '该用户已经被拉黑', '/account/blacklist');
                 exit;
             }
 
-            // 更新accounts表的账号状态
-            $r = $this->accountModel->updateAccountById($account_id, 0);
+            //todo 此处通知cp，让用户立即下线并封禁该角色
+            $response = $this->accountModel->playerOffline(['zone' => $zone, 'role_id' => $role_id, 'end' => strtotime($end)]);
 
-            // 换取role_id
-            if (empty($role_id)) {
-                // 通过现有的数据换取role_id
-                $role_id = $this->accountModel->getRoleId(['zone' => $zone, 'account_id' => $account_id, 'user_name' => $name]);
-            }
-
-            //todo 此处通知cp，让用户立即下线
-            $response = $this->accountModel->playerOffline(['zone' => $zone, 'role_id' => $role_id]);
-
-            if (!$r || !$response) {
+            if ($response['code'] != 0) {
                 Utils::tips('error', '创建失败', '/account/blacklist');
                 exit;
             }
 
             // 当所有操作都通过，才进行记录
             $this->accountModel->setBlackListData([
-                'user_id' => $account_id,
+                'user_id' => $role_id,
                 'app_id' => $app_id,
                 'zone' => $zone,
-                'start_time' => strtotime($start),
+                'start_time' => strtotime('Y-m-d H:i:s', time()),
                 'end_time' => strtotime($end)
             ]);
 

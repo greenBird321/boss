@@ -19,7 +19,7 @@
                                     <table class="table table-striped b-t b-light">
                                         <thead>
                                         <tr>
-                                            <th width="25%">账号ID</th>
+                                            <th width="25%">角色ID</th>
                                             <th>封禁开始时间</th>
                                             <th>封禁结束时间</th>
                                             <th>更多</th>
@@ -28,7 +28,7 @@
                                         <tbody>
                                         {% for blacklist in blacklists %}
                                         <tr>
-                                            <td width="25%">{{blacklist['user_id']}}</td>
+                                            <td width="25%">{{blacklist['role_id']}}</td>
                                             <td>{{blacklist['start_time']}}</td>
                                             <td>{{blacklist['end_time']}}</td>
                                             <td>

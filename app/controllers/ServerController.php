@@ -24,8 +24,8 @@ class ServerController extends ControllerBase
     ];
 
     private $flag = [
-        0 => '推荐',
-        1 => '默认',
+        0 => '不推荐',
+        1 => '默认推荐',
         3 => '强烈推荐',
     ];
 
